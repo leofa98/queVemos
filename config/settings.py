@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "rooms",
     "catalog",
     "library",
+    "core",
 ]
 
 MIDDLEWARE = [

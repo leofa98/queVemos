@@ -28,3 +28,6 @@ class Entry(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["user", "title"], name="unique_entry")
         ]
+
+    def __str__(self):
+        return f"{self.user} - {self.title} - {self.get_status_display()}"
