@@ -1,0 +1,146 @@
+/********** VARIABLES **********/
+
+:root {
+  --qv-azul: #2E4A7D;
+  --qv-azul-oscuro: #24395F;
+  --qv-ambar: #C1783C;
+  --qv-ambar-claro: #E0A561;
+  --qv-radius: 12px;
+  --qv-gap: 1rem;
+
+  --bs-primary: #2E4A7D;
+  --bs-primary-rgb: 46, 74, 125;
+  --bs-secondary: #79818F;
+  --bs-secondary-rgb: 121, 129, 143;
+  --bs-success: #2B6A4C;
+  --bs-success-rgb: 43, 106, 76;
+  --bs-danger: #A8502C;
+  --bs-danger-rgb: 168, 80, 44;
+  
+  --bs-body-bg: #F7F9FB;
+  --bs-body-color: #242830;
+  --bs-border-color: #E3E7EE;
+
+  --bs-body-font-family: "Manrope", system-ui, sans-serif;
+  --bs-link-color: #2E4A7D;
+  --bs-link-color-rgb: 46, 74, 125;
+  --bs-link-hover-color: #24395F;
+
+  
+}
+
+
+/********** BOOTSTRAP **********/
+.alert {
+  --bs-alert-border-radius: var(--qv-radius);
+  --bs-alert-padding-x: 0.875rem;
+  --bs-alert-padding-y: 0.625rem;
+}
+
+.alert-success {
+  --bs-alert-bg: #E6F1EA;
+  --bs-alert-color: #2B6A4C;
+  --bs-alert-border-color: #C9E2D4;
+}
+
+.alert-danger {
+  --bs-alert-bg: #FDF6F3;
+  --bs-alert-color: #A8502C;
+  --bs-alert-border-color: #EDD3C7;
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--qv-azul);
+  --bs-btn-border-color: var(--qv-azul);
+  --bs-btn-hover-bg: var(--qv-azul-oscuro);
+  --bs-btn-hover-border-color: var(--qv-azul-oscuro);
+  --bs-btn-active-bg: #1C2D4B;
+  --bs-btn-active-border-color: #1C2D4B;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--qv-azul);
+  --bs-btn-border-color: var(--qv-azul);
+  --bs-btn-hover-bg: var(--qv-azul);
+  --bs-btn-hover-border-color: var(--qv-azul);
+}
+
+
+.accounts-form .form-control {
+  --bs-body-font-size: 14px;
+}
+
+.accounts-form .btn {
+  --bs-btn-font-size: 13px;
+  --bs-btn-font-weight: 600;
+}
+
+/***********  BASE **********/
+
+
+html{
+    background-color: var(--bs-body-bg);
+}
+
+label{
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/********** LAYOUT **********/
+
+.navbar {
+  --bs-navbar-color: rgba(255, 255, 255, .78);
+  --bs-navbar-hover-color: #fff;
+  --bs-navbar-active-color: #fff;
+}
+.logo {
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-decoration: none;
+}
+
+.logo span { color: var(--qv-ambar-claro); }
+.logo:hover { color: #fff; }
+
+/********** COMPONENTS **********/
+
+/* Welcome page */
+
+.welcome-container{
+    max-width:655px; 
+    margin:0 auto; 
+}
+
+.welcome-container li::marker{
+    font-weight: bolder;
+    color:var(--bs-primary);
+    font-size: 20px;
+}
+
+.welcome-container li{
+    font-size: 18px;
+    margin-top: 0.5rem;
+}
+
+.welcome-container h1{
+    font-weight: 400;
+    font-size: clamp(2rem, 6vw, 3.75rem);
+}
+
+/* Accounts page */
+
+.accounts-form{
+  border-radius: 15px;
+  max-width: 500px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  margin: 0 auto;
+  width: 100%
+}
+
+
+
+/**********  UTILITIES **********/
