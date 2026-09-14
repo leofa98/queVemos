@@ -93,6 +93,7 @@ label{
   --bs-navbar-color: rgba(255, 255, 255, .78);
   --bs-navbar-hover-color: #fff;
   --bs-navbar-active-color: #fff;
+  min-height: 3.5rem;
 }
 .logo {
   font-family: "Manrope", sans-serif;

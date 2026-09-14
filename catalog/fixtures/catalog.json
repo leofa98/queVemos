@@ -1,0 +1,963 @@
+
+[
+  {
+    "model": "catalog.genre",
+    "pk": 1,
+    "fields": {
+      "name": "Acción",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.genre",
+    "pk": 2,
+    "fields": {
+      "name": "Animación",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.genre",
+    "pk": 3,
+    "fields": {
+      "name": "Aventura",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.genre",
+    "pk": 4,
+    "fields": {
+      "name": "Ciencia ficción",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.genre",
+    "pk": 5,
+    "fields": {
+      "name": "Comedia",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.genre",
+    "pk": 6,
+    "fields": {
+      "name": "Crimen",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.genre",
+    "pk": 7,
+    "fields": {
+      "name": "Documental",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.genre",
+    "pk": 8,
+    "fields": {
+      "name": "Drama",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.genre",
+    "pk": 9,
+    "fields": {
+      "name": "Fantasía",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.genre",
+    "pk": 10,
+    "fields": {
+      "name": "Musical",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.genre",
+    "pk": 11,
+    "fields": {
+      "name": "Romance",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.genre",
+    "pk": 12,
+    "fields": {
+      "name": "Terror",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.genre",
+    "pk": 13,
+    "fields": {
+      "name": "Thriller",
+      "tmdb_id": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 1,
+    "fields": {
+      "name": "Dune",
+      "media_type": "movie",
+      "year": 2021,
+      "synopsis": "El heredero de una casa noble es enviado a un planeta desértico que guarda el recurso más valioso del universo.",
+      "image": "",
+      "genres": [
+        3,
+        4
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 2,
+    "fields": {
+      "name": "Dune: Parte Dos",
+      "media_type": "movie",
+      "year": 2024,
+      "synopsis": "Paul se alía con los habitantes del desierto para vengar a su familia y frenar un futuro que ya ha visto.",
+      "image": "",
+      "genres": [
+        3,
+        4
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 3,
+    "fields": {
+      "name": "Todo a la vez en todas partes",
+      "media_type": "movie",
+      "year": 2022,
+      "synopsis": "Una mujer agobiada por la declaración de la renta descubre que puede acceder a las vidas de sus otros yos.",
+      "image": "",
+      "genres": [
+        1,
+        4,
+        5
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 4,
+    "fields": {
+      "name": "Parásitos",
+      "media_type": "movie",
+      "year": 2019,
+      "synopsis": "Una familia sin recursos se va infiltrando, uno a uno, en la casa de una familia adinerada.",
+      "image": "",
+      "genres": [
+        8,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 5,
+    "fields": {
+      "name": "Hereditary",
+      "media_type": "movie",
+      "year": 2018,
+      "synopsis": "Tras la muerte de la abuela, una familia empieza a destapar un legado que preferiría no conocer.",
+      "image": "",
+      "genres": [
+        8,
+        12
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 6,
+    "fields": {
+      "name": "Midsommar",
+      "media_type": "movie",
+      "year": 2019,
+      "synopsis": "Un grupo de amigos viaja a un festival de verano en Suecia donde nunca se hace de noche.",
+      "image": "",
+      "genres": [
+        8,
+        12
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 7,
+    "fields": {
+      "name": "El faro",
+      "media_type": "movie",
+      "year": 2019,
+      "synopsis": "Dos fareros conviven aislados en una roca del Atlántico mientras la cordura de ambos se deshace.",
+      "image": "",
+      "genres": [
+        8,
+        12
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 8,
+    "fields": {
+      "name": "Whiplash",
+      "media_type": "movie",
+      "year": 2014,
+      "synopsis": "Un batería de conservatorio se somete a los métodos de un profesor dispuesto a todo por la excelencia.",
+      "image": "",
+      "genres": [
+        8,
+        10
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 9,
+    "fields": {
+      "name": "La La Land",
+      "media_type": "movie",
+      "year": 2016,
+      "synopsis": "Una actriz y un pianista se enamoran en Los Ángeles mientras persiguen carreras que tiran de ellos en direcciones opuestas.",
+      "image": "",
+      "genres": [
+        8,
+        10,
+        11
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 10,
+    "fields": {
+      "name": "Blade Runner 2049",
+      "media_type": "movie",
+      "year": 2017,
+      "synopsis": "Un agente encargado de retirar replicantes obsoletos destapa un secreto capaz de romper el orden establecido.",
+      "image": "",
+      "genres": [
+        4,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 11,
+    "fields": {
+      "name": "Interestelar",
+      "media_type": "movie",
+      "year": 2014,
+      "synopsis": "Con la Tierra agotada, un piloto cruza un agujero de gusano buscando un planeta donde empezar de nuevo.",
+      "image": "",
+      "genres": [
+        3,
+        4,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 12,
+    "fields": {
+      "name": "Mad Max: Furia en la carretera",
+      "media_type": "movie",
+      "year": 2015,
+      "synopsis": "Una huida por el desierto con un convoy de perseguidores detrás y casi ningún diálogo por medio.",
+      "image": "",
+      "genres": [
+        1,
+        3
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 13,
+    "fields": {
+      "name": "John Wick",
+      "media_type": "movie",
+      "year": 2014,
+      "synopsis": "Un sicario retirado vuelve al oficio después de que unos matones le quiten lo único que le quedaba.",
+      "image": "",
+      "genres": [
+        1,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 14,
+    "fields": {
+      "name": "El gran hotel Budapest",
+      "media_type": "movie",
+      "year": 2014,
+      "synopsis": "El conserje de un hotel centroeuropeo y su botones se ven envueltos en el robo de un cuadro y una herencia disputada.",
+      "image": "",
+      "genres": [
+        3,
+        5
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 15,
+    "fields": {
+      "name": "Puñales por la espalda",
+      "media_type": "movie",
+      "year": 2019,
+      "synopsis": "Un detective investiga la muerte de un escritor rodeado de una familia con motivos de sobra.",
+      "image": "",
+      "genres": [
+        5,
+        6
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 16,
+    "fields": {
+      "name": "Zodiac",
+      "media_type": "movie",
+      "year": 2007,
+      "synopsis": "La investigación de un asesino en serie que se prolonga durante décadas y consume a quienes la persiguen.",
+      "image": "",
+      "genres": [
+        6,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 17,
+    "fields": {
+      "name": "Prisioneros",
+      "media_type": "movie",
+      "year": 2013,
+      "synopsis": "Dos niñas desaparecen y el padre de una de ellas decide no esperar a que la policía resuelva el caso.",
+      "image": "",
+      "genres": [
+        6,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 18,
+    "fields": {
+      "name": "La llegada",
+      "media_type": "movie",
+      "year": 2016,
+      "synopsis": "Una lingüista intenta comunicarse con unos visitantes cuya forma de entender el tiempo no se parece a la nuestra.",
+      "image": "",
+      "genres": [
+        4,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 19,
+    "fields": {
+      "name": "Her",
+      "media_type": "movie",
+      "year": 2013,
+      "synopsis": "Un hombre solitario se enamora del sistema operativo con el que habla todos los días.",
+      "image": "",
+      "genres": [
+        4,
+        8,
+        11
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 20,
+    "fields": {
+      "name": "Coco",
+      "media_type": "movie",
+      "year": 2017,
+      "synopsis": "Un niño que quiere ser músico acaba en el mundo de los muertos buscando el permiso de su familia.",
+      "image": "",
+      "genres": [
+        2,
+        3
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 21,
+    "fields": {
+      "name": "El viaje de Chihiro",
+      "media_type": "movie",
+      "year": 2001,
+      "synopsis": "Una niña queda atrapada en una casa de baños para espíritus y tiene que trabajar allí para recuperar a sus padres.",
+      "image": "",
+      "genres": [
+        2,
+        3,
+        9
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 22,
+    "fields": {
+      "name": "Anatomía de una caída",
+      "media_type": "movie",
+      "year": 2023,
+      "synopsis": "Una escritora es juzgada por la muerte de su marido y el juicio acaba destripando su matrimonio entero.",
+      "image": "",
+      "genres": [
+        6,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 23,
+    "fields": {
+      "name": "Pobres criaturas",
+      "media_type": "movie",
+      "year": 2023,
+      "synopsis": "Una mujer devuelta a la vida por un científico excéntrico se lanza a recorrer el mundo sin filtros ni vergüenza.",
+      "image": "",
+      "genres": [
+        5,
+        8,
+        9
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 24,
+    "fields": {
+      "name": "Oppenheimer",
+      "media_type": "movie",
+      "year": 2023,
+      "synopsis": "El físico que dirigió el proyecto de la primera bomba atómica y lo que vino después para él.",
+      "image": "",
+      "genres": [
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 25,
+    "fields": {
+      "name": "Barbie",
+      "media_type": "movie",
+      "year": 2023,
+      "synopsis": "Una muñeca abandona su mundo perfecto y descubre que el real funciona bastante peor.",
+      "image": "",
+      "genres": [
+        5,
+        9
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 26,
+    "fields": {
+      "name": "Aftersun",
+      "media_type": "movie",
+      "year": 2022,
+      "synopsis": "Una mujer recuerda las vacaciones que pasó con su padre siendo niña y lo que entonces no supo ver.",
+      "image": "",
+      "genres": [
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 27,
+    "fields": {
+      "name": "La sustancia",
+      "media_type": "movie",
+      "year": 2024,
+      "synopsis": "Una presentadora en decadencia prueba un tratamiento que promete una versión mejorada de sí misma.",
+      "image": "",
+      "genres": [
+        4,
+        12
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 28,
+    "fields": {
+      "name": "Civil War",
+      "media_type": "movie",
+      "year": 2024,
+      "synopsis": "Un grupo de periodistas cruza unos Estados Unidos fracturados por la guerra para llegar a Washington.",
+      "image": "",
+      "genres": [
+        1,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 29,
+    "fields": {
+      "name": "Perfect Days",
+      "media_type": "movie",
+      "year": 2023,
+      "synopsis": "La rutina de un limpiador de baños públicos en Tokio, contada con una calma que no busca giros.",
+      "image": "",
+      "genres": [
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 30,
+    "fields": {
+      "name": "Free Solo",
+      "media_type": "movie",
+      "year": 2018,
+      "synopsis": "Un escalador se prepara para subir una pared de casi mil metros sin cuerda ni arnés.",
+      "image": "",
+      "genres": [
+        7
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 31,
+    "fields": {
+      "name": "Drive",
+      "media_type": "movie",
+      "year": 2011,
+      "synopsis": "Un especialista de cine trabaja de noche como conductor de huidas hasta que un encargo sale mal.",
+      "image": "",
+      "genres": [
+        6,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 32,
+    "fields": {
+      "name": "Uno de los nuestros",
+      "media_type": "movie",
+      "year": 1990,
+      "synopsis": "Treinta años en la vida de un mafioso, desde el deslumbramiento inicial hasta el desmoronamiento.",
+      "image": "",
+      "genres": [
+        6,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 33,
+    "fields": {
+      "name": "Severance",
+      "media_type": "tv",
+      "year": 2022,
+      "synopsis": "Unos empleados aceptan separar quirúrgicamente sus recuerdos del trabajo de los de su vida personal.",
+      "image": "",
+      "genres": [
+        4,
+        8,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 34,
+    "fields": {
+      "name": "Andor",
+      "media_type": "tv",
+      "year": 2022,
+      "synopsis": "Cómo un hombre sin ninguna vocación heroica acaba metido en una rebelión contra un imperio.",
+      "image": "",
+      "genres": [
+        4,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 35,
+    "fields": {
+      "name": "The Bear",
+      "media_type": "tv",
+      "year": 2022,
+      "synopsis": "Un cocinero de alta cocina hereda el local familiar de bocadillos y el caos que venía con él.",
+      "image": "",
+      "genres": [
+        5,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 36,
+    "fields": {
+      "name": "Succession",
+      "media_type": "tv",
+      "year": 2018,
+      "synopsis": "Los hijos de un magnate de los medios se pelean por sucederle mientras él no tiene intención de irse.",
+      "image": "",
+      "genres": [
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 37,
+    "fields": {
+      "name": "Fleabag",
+      "media_type": "tv",
+      "year": 2016,
+      "synopsis": "Una mujer que lo lleva todo regular se dirige a cámara para contarnos lo que no le cuenta a nadie.",
+      "image": "",
+      "genres": [
+        5,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 38,
+    "fields": {
+      "name": "Chernobyl",
+      "media_type": "tv",
+      "year": 2019,
+      "synopsis": "La reconstrucción del accidente nuclear y de todo lo que se hizo por ocultar su alcance.",
+      "image": "",
+      "genres": [
+        8,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 39,
+    "fields": {
+      "name": "Dark",
+      "media_type": "tv",
+      "year": 2017,
+      "synopsis": "La desaparición de un niño en un pueblo alemán destapa un lío de viajes en el tiempo entre cuatro familias.",
+      "image": "",
+      "genres": [
+        4,
+        8,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 40,
+    "fields": {
+      "name": "El juego del calamar",
+      "media_type": "tv",
+      "year": 2021,
+      "synopsis": "Cientos de personas endeudadas compiten en juegos infantiles donde perder cuesta la vida.",
+      "image": "",
+      "genres": [
+        8,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 41,
+    "fields": {
+      "name": "La casa del dragón",
+      "media_type": "tv",
+      "year": 2022,
+      "synopsis": "Una guerra de sucesión dentro de una familia que monta dragones y no sabe llevarse bien.",
+      "image": "",
+      "genres": [
+        8,
+        9
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 42,
+    "fields": {
+      "name": "Arcane",
+      "media_type": "tv",
+      "year": 2021,
+      "synopsis": "Dos hermanas acaban en bandos opuestos de un conflicto entre una ciudad rica y el barrio de abajo.",
+      "image": "",
+      "genres": [
+        1,
+        2,
+        9
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 43,
+    "fields": {
+      "name": "Breaking Bad",
+      "media_type": "tv",
+      "year": 2008,
+      "synopsis": "Un profesor de química con un diagnóstico terminal empieza a fabricar droga y le coge el gusto.",
+      "image": "",
+      "genres": [
+        6,
+        8,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 44,
+    "fields": {
+      "name": "Mindhunter",
+      "media_type": "tv",
+      "year": 2017,
+      "synopsis": "Dos agentes del FBI entrevistan a asesinos encarcelados para entender cómo piensan.",
+      "image": "",
+      "genres": [
+        6,
+        8,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 45,
+    "fields": {
+      "name": "Beef",
+      "media_type": "tv",
+      "year": 2023,
+      "synopsis": "Un incidente de tráfico entre dos desconocidos se convierte en una guerra personal que no sabe parar.",
+      "image": "",
+      "genres": [
+        5,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 46,
+    "fields": {
+      "name": "Shogun",
+      "media_type": "tv",
+      "year": 2024,
+      "synopsis": "Un navegante inglés naufraga en el Japón feudal justo cuando un señor de la guerra lo necesita.",
+      "image": "",
+      "genres": [
+        3,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 47,
+    "fields": {
+      "name": "Baby Reindeer",
+      "media_type": "tv",
+      "year": 2024,
+      "synopsis": "Un cómico sin éxito acepta la atención de una desconocida y tarda demasiado en ver lo que se le viene encima.",
+      "image": "",
+      "genres": [
+        8,
+        13
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 48,
+    "fields": {
+      "name": "Better Call Saul",
+      "media_type": "tv",
+      "year": 2015,
+      "synopsis": "Cómo un abogado con buenas intenciones y peores métodos se convierte en el que ya conocíamos.",
+      "image": "",
+      "genres": [
+        6,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 49,
+    "fields": {
+      "name": "La maravillosa señora Maisel",
+      "media_type": "tv",
+      "year": 2017,
+      "synopsis": "Un ama de casa de los años cincuenta descubre que se le da muy bien el monólogo cómico.",
+      "image": "",
+      "genres": [
+        5,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  },
+  {
+    "model": "catalog.title",
+    "pk": 50,
+    "fields": {
+      "name": "El cuerpo en llamas",
+      "media_type": "tv",
+      "year": 2023,
+      "synopsis": "Serie española sobre un caso real de desaparición en Barcelona y el juicio que lo siguió.",
+      "image": "",
+      "genres": [
+        6,
+        8
+      ],
+      "tmdb_id": null,
+      "last_sync": null
+    }
+  }
+]

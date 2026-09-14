@@ -1,0 +1,821 @@
+[
+  {
+    "model": "library.entry",
+    "pk": 1,
+    "fields": {
+      "user": 101,
+      "title": 33,
+      "status": "seen",
+      "rating": 9,
+      "comment": "la mejor serie que he visto en años, el final de la 1 me dejó temblando",
+      "created_at": "2026-08-23T02:30:00Z",
+      "updated_at": "2026-08-24T05:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 2,
+    "fields": {
+      "user": 101,
+      "title": 4,
+      "status": "seen",
+      "rating": 9,
+      "comment": "peliculón. la escena de la lluvia no se me va de la cabeza",
+      "created_at": "2026-08-23T09:30:00Z",
+      "updated_at": "2026-08-25T15:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 3,
+    "fields": {
+      "user": 101,
+      "title": 37,
+      "status": "seen",
+      "rating": 10,
+      "comment": "me la he visto 3 veces ya, no es sano jajaj",
+      "created_at": "2026-08-23T16:30:00Z",
+      "updated_at": "2026-08-27T01:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 4,
+    "fields": {
+      "user": 101,
+      "title": 25,
+      "status": "seen",
+      "rating": 8,
+      "comment": "me lo pasé genial en el cine la verdad, no entiendo tanto hate",
+      "created_at": "2026-08-23T23:30:00Z",
+      "updated_at": "2026-08-28T00:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 5,
+    "fields": {
+      "user": 101,
+      "title": 8,
+      "status": "seen",
+      "rating": 8,
+      "comment": "que agobio de peli madre mia, buenisima pero no la repito",
+      "created_at": "2026-08-24T06:30:00Z",
+      "updated_at": "2026-08-29T10:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 6,
+    "fields": {
+      "user": 101,
+      "title": 21,
+      "status": "seen",
+      "rating": 10,
+      "comment": "",
+      "created_at": "2026-08-24T13:30:00Z",
+      "updated_at": "2026-08-30T20:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 7,
+    "fields": {
+      "user": 101,
+      "title": 26,
+      "status": "seen",
+      "rating": 9,
+      "comment": "lloré en el metro volviendo a casa, muy top",
+      "created_at": "2026-08-24T20:30:00Z",
+      "updated_at": "2026-09-01T06:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 8,
+    "fields": {
+      "user": 101,
+      "title": 43,
+      "status": "seen",
+      "rating": 9,
+      "comment": "tarde 10 años en verla y tenian razon todos",
+      "created_at": "2026-08-25T03:30:00Z",
+      "updated_at": "2026-09-02T05:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 9,
+    "fields": {
+      "user": 101,
+      "title": 41,
+      "status": "dropped",
+      "rating": null,
+      "comment": "la dejé en el 4 o asi, mucho nombre raro y poco dragon",
+      "created_at": "2026-08-25T10:30:00Z",
+      "updated_at": "2026-08-25T15:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 10,
+    "fields": {
+      "user": 101,
+      "title": 40,
+      "status": "seen",
+      "rating": 6,
+      "comment": "esta sobrevalorada eh. entretenida pero ya",
+      "created_at": "2026-08-25T17:30:00Z",
+      "updated_at": "2026-08-27T01:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 11,
+    "fields": {
+      "user": 101,
+      "title": 2,
+      "status": "seen",
+      "rating": 8,
+      "comment": "en cine con el sonido a tope, otra cosa",
+      "created_at": "2026-08-26T00:30:00Z",
+      "updated_at": "2026-08-28T00:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 12,
+    "fields": {
+      "user": 101,
+      "title": 34,
+      "status": "pending",
+      "rating": null,
+      "comment": "me la recomienda todo el mundo del curro",
+      "created_at": "2026-08-26T07:30:00Z",
+      "updated_at": "2026-08-29T10:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 13,
+    "fields": {
+      "user": 101,
+      "title": 29,
+      "status": "pending",
+      "rating": null,
+      "comment": "",
+      "created_at": "2026-08-26T14:30:00Z",
+      "updated_at": "2026-08-30T20:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 14,
+    "fields": {
+      "user": 101,
+      "title": 46,
+      "status": "pending",
+      "rating": null,
+      "comment": "pendiente desde hace siglos",
+      "created_at": "2026-08-26T21:30:00Z",
+      "updated_at": "2026-09-01T06:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 15,
+    "fields": {
+      "user": 101,
+      "title": 27,
+      "status": "pending",
+      "rating": null,
+      "comment": "me da miedito pero la tengo que ver",
+      "created_at": "2026-08-27T04:30:00Z",
+      "updated_at": "2026-09-02T05:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 16,
+    "fields": {
+      "user": 101,
+      "title": 45,
+      "status": "pending",
+      "rating": null,
+      "comment": "",
+      "created_at": "2026-08-27T11:30:00Z",
+      "updated_at": "2026-09-03T15:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 17,
+    "fields": {
+      "user": 101,
+      "title": 22,
+      "status": "pending",
+      "rating": null,
+      "comment": "esta la vio mi hermana y dice que es muy buena",
+      "created_at": "2026-08-27T18:30:00Z",
+      "updated_at": "2026-09-05T01:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 18,
+    "fields": {
+      "user": 101,
+      "title": 38,
+      "status": "pending",
+      "rating": null,
+      "comment": "",
+      "created_at": "2026-08-28T01:30:00Z",
+      "updated_at": "2026-08-28T11:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 19,
+    "fields": {
+      "user": 101,
+      "title": 23,
+      "status": "seen",
+      "rating": 7,
+      "comment": "rarísima. visualmente increible pero se me hizo larga",
+      "created_at": "2026-08-28T08:30:00Z",
+      "updated_at": "2026-08-29T10:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 20,
+    "fields": {
+      "user": 101,
+      "title": 20,
+      "status": "seen",
+      "rating": 9,
+      "comment": "",
+      "created_at": "2026-08-28T15:30:00Z",
+      "updated_at": "2026-08-30T20:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 21,
+    "fields": {
+      "user": 102,
+      "title": 33,
+      "status": "seen",
+      "rating": 9,
+      "comment": "brutal el concepto, ojala la 2ª temporada este a la altura",
+      "created_at": "2026-08-29T01:30:00Z",
+      "updated_at": "2026-09-01T09:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 22,
+    "fields": {
+      "user": 102,
+      "title": 4,
+      "status": "seen",
+      "rating": 8,
+      "comment": "muy buena aunque me esperaba otra cosa por como me la vendieron",
+      "created_at": "2026-08-29T08:30:00Z",
+      "updated_at": "2026-09-02T08:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 23,
+    "fields": {
+      "user": 102,
+      "title": 10,
+      "status": "seen",
+      "rating": 10,
+      "comment": "peaso fotografia, la volveria a ver mañana mismo",
+      "created_at": "2026-08-29T15:30:00Z",
+      "updated_at": "2026-09-03T18:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 24,
+    "fields": {
+      "user": 102,
+      "title": 11,
+      "status": "seen",
+      "rating": 9,
+      "comment": "la banda sonora es de otro planeta nunca mejor dicho",
+      "created_at": "2026-08-29T22:30:00Z",
+      "updated_at": "2026-09-05T04:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 25,
+    "fields": {
+      "user": 102,
+      "title": 24,
+      "status": "seen",
+      "rating": 9,
+      "comment": "3 horas que se pasan volando",
+      "created_at": "2026-08-30T05:30:00Z",
+      "updated_at": "2026-09-06T14:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 26,
+    "fields": {
+      "user": 102,
+      "title": 25,
+      "status": "seen",
+      "rating": 4,
+      "comment": "no es pa tanto sinceramente. me aburri",
+      "created_at": "2026-08-30T12:30:00Z",
+      "updated_at": "2026-09-07T13:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 27,
+    "fields": {
+      "user": 102,
+      "title": 39,
+      "status": "seen",
+      "rating": 9,
+      "comment": "tuve que hacerme un esquema en un papel, en serio",
+      "created_at": "2026-08-30T19:30:00Z",
+      "updated_at": "2026-08-30T23:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 28,
+    "fields": {
+      "user": 102,
+      "title": 12,
+      "status": "seen",
+      "rating": 9,
+      "comment": "2h de persecución y no sobra ni un minuto",
+      "created_at": "2026-08-31T02:30:00Z",
+      "updated_at": "2026-09-01T09:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 29,
+    "fields": {
+      "user": 102,
+      "title": 44,
+      "status": "seen",
+      "rating": 8,
+      "comment": "una pena que la cancelaran",
+      "created_at": "2026-08-31T09:30:00Z",
+      "updated_at": "2026-09-02T19:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 30,
+    "fields": {
+      "user": 102,
+      "title": 31,
+      "status": "seen",
+      "rating": 8,
+      "comment": "",
+      "created_at": "2026-08-31T16:30:00Z",
+      "updated_at": "2026-09-03T18:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 31,
+    "fields": {
+      "user": 102,
+      "title": 13,
+      "status": "seen",
+      "rating": 7,
+      "comment": "para desconectar esta genial",
+      "created_at": "2026-08-31T23:30:00Z",
+      "updated_at": "2026-09-05T04:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 32,
+    "fields": {
+      "user": 102,
+      "title": 32,
+      "status": "seen",
+      "rating": 9,
+      "comment": "clasicazo",
+      "created_at": "2026-09-01T06:30:00Z",
+      "updated_at": "2026-09-06T14:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 33,
+    "fields": {
+      "user": 102,
+      "title": 34,
+      "status": "pending",
+      "rating": null,
+      "comment": "dicen que es la mejor cosa de star wars en años",
+      "created_at": "2026-09-01T13:30:00Z",
+      "updated_at": "2026-09-07T13:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 34,
+    "fields": {
+      "user": 102,
+      "title": 29,
+      "status": "pending",
+      "rating": null,
+      "comment": "me la apunto que tiene buena pinta",
+      "created_at": "2026-09-01T20:30:00Z",
+      "updated_at": "2026-09-08T23:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 35,
+    "fields": {
+      "user": 102,
+      "title": 46,
+      "status": "pending",
+      "rating": null,
+      "comment": "",
+      "created_at": "2026-09-02T03:30:00Z",
+      "updated_at": "2026-09-10T09:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 36,
+    "fields": {
+      "user": 102,
+      "title": 27,
+      "status": "pending",
+      "rating": null,
+      "comment": "",
+      "created_at": "2026-09-02T10:30:00Z",
+      "updated_at": "2026-09-02T19:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 37,
+    "fields": {
+      "user": 102,
+      "title": 22,
+      "status": "pending",
+      "rating": null,
+      "comment": "",
+      "created_at": "2026-09-02T17:30:00Z",
+      "updated_at": "2026-09-03T18:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 38,
+    "fields": {
+      "user": 102,
+      "title": 18,
+      "status": "pending",
+      "rating": null,
+      "comment": "no se como no la he visto todavia",
+      "created_at": "2026-09-03T00:30:00Z",
+      "updated_at": "2026-09-05T04:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 39,
+    "fields": {
+      "user": 102,
+      "title": 37,
+      "status": "dropped",
+      "rating": null,
+      "comment": "no me enganchó, igual le doy otra oportunidad",
+      "created_at": "2026-09-03T07:30:00Z",
+      "updated_at": "2026-09-06T14:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 40,
+    "fields": {
+      "user": 102,
+      "title": 48,
+      "status": "seen",
+      "rating": 9,
+      "comment": "casi mejor que breaking bad y lo digo en serio",
+      "created_at": "2026-09-03T14:30:00Z",
+      "updated_at": "2026-09-08T00:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 41,
+    "fields": {
+      "user": 103,
+      "title": 33,
+      "status": "seen",
+      "rating": 8,
+      "comment": "muy buena pero me pone nerviosa verla de noche",
+      "created_at": "2026-09-04T00:30:00Z",
+      "updated_at": "2026-09-09T02:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 42,
+    "fields": {
+      "user": 103,
+      "title": 4,
+      "status": "seen",
+      "rating": 9,
+      "comment": "",
+      "created_at": "2026-09-04T07:30:00Z",
+      "updated_at": "2026-09-10T12:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 43,
+    "fields": {
+      "user": 103,
+      "title": 24,
+      "status": "seen",
+      "rating": 5,
+      "comment": "se me hizo eterna, mucho hablar y poco mas",
+      "created_at": "2026-09-04T14:30:00Z",
+      "updated_at": "2026-09-11T22:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 44,
+    "fields": {
+      "user": 103,
+      "title": 5,
+      "status": "seen",
+      "rating": 9,
+      "comment": "no dormi. de las pocas de terror que me han dado miedo de verdad",
+      "created_at": "2026-09-04T21:30:00Z",
+      "updated_at": "2026-09-12T21:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 45,
+    "fields": {
+      "user": 103,
+      "title": 6,
+      "status": "seen",
+      "rating": 8,
+      "comment": "que agobio pero que bien hecha esta",
+      "created_at": "2026-09-05T04:30:00Z",
+      "updated_at": "2026-09-05T07:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 46,
+    "fields": {
+      "user": 103,
+      "title": 9,
+      "status": "seen",
+      "rating": 9,
+      "comment": "el final me destrozó, cancion favorita del mundo",
+      "created_at": "2026-09-05T11:30:00Z",
+      "updated_at": "2026-09-06T17:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 47,
+    "fields": {
+      "user": 103,
+      "title": 19,
+      "status": "seen",
+      "rating": 9,
+      "comment": "",
+      "created_at": "2026-09-05T18:30:00Z",
+      "updated_at": "2026-09-08T03:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 48,
+    "fields": {
+      "user": 103,
+      "title": 35,
+      "status": "seen",
+      "rating": 10,
+      "comment": "grito en cada capitulo pero la adoro",
+      "created_at": "2026-09-06T01:30:00Z",
+      "updated_at": "2026-09-09T02:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 49,
+    "fields": {
+      "user": 103,
+      "title": 36,
+      "status": "seen",
+      "rating": 9,
+      "comment": "no hay un solo personaje bueno y aun asi los quieres a todos",
+      "created_at": "2026-09-06T08:30:00Z",
+      "updated_at": "2026-09-10T12:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 50,
+    "fields": {
+      "user": 103,
+      "title": 42,
+      "status": "seen",
+      "rating": 9,
+      "comment": "la animacion es una barbaridad, y yo que no juego al lol",
+      "created_at": "2026-09-06T15:30:00Z",
+      "updated_at": "2026-09-11T22:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 51,
+    "fields": {
+      "user": 103,
+      "title": 47,
+      "status": "seen",
+      "rating": 7,
+      "comment": "muy incomoda de ver, no se si recomendarla",
+      "created_at": "2026-09-06T22:30:00Z",
+      "updated_at": "2026-09-13T08:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 52,
+    "fields": {
+      "user": 103,
+      "title": 34,
+      "status": "pending",
+      "rating": null,
+      "comment": "",
+      "created_at": "2026-09-07T05:30:00Z",
+      "updated_at": "2026-09-14T07:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 53,
+    "fields": {
+      "user": 103,
+      "title": 29,
+      "status": "pending",
+      "rating": null,
+      "comment": "esta la queria ver en el cine y se me pasó",
+      "created_at": "2026-09-07T12:30:00Z",
+      "updated_at": "2026-09-15T17:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 54,
+    "fields": {
+      "user": 103,
+      "title": 46,
+      "status": "pending",
+      "rating": null,
+      "comment": "",
+      "created_at": "2026-09-07T19:30:00Z",
+      "updated_at": "2026-09-08T03:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 55,
+    "fields": {
+      "user": 103,
+      "title": 45,
+      "status": "pending",
+      "rating": null,
+      "comment": "me la recomendo marta",
+      "created_at": "2026-09-08T02:30:00Z",
+      "updated_at": "2026-09-09T02:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 56,
+    "fields": {
+      "user": 103,
+      "title": 22,
+      "status": "pending",
+      "rating": null,
+      "comment": "",
+      "created_at": "2026-09-08T09:30:00Z",
+      "updated_at": "2026-09-10T12:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 57,
+    "fields": {
+      "user": 103,
+      "title": 16,
+      "status": "pending",
+      "rating": null,
+      "comment": "",
+      "created_at": "2026-09-08T16:30:00Z",
+      "updated_at": "2026-09-11T22:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 58,
+    "fields": {
+      "user": 103,
+      "title": 14,
+      "status": "seen",
+      "rating": 8,
+      "comment": "monisima, muy de wes anderson todo",
+      "created_at": "2026-09-08T23:30:00Z",
+      "updated_at": "2026-09-13T08:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 59,
+    "fields": {
+      "user": 103,
+      "title": 40,
+      "status": "dropped",
+      "rating": null,
+      "comment": "vi 2 capitulos y ya sabia como iba a acabar",
+      "created_at": "2026-09-09T06:30:00Z",
+      "updated_at": "2026-09-14T07:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 60,
+    "fields": {
+      "user": 103,
+      "title": 15,
+      "status": "seen",
+      "rating": 8,
+      "comment": "la vi con mis padres y les encantó",
+      "created_at": "2026-09-09T13:30:00Z",
+      "updated_at": "2026-09-15T17:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 61,
+    "fields": {
+      "user": 102,
+      "title": 2,
+      "status": "pending",
+      "rating": null,
+      "comment": "la 1 me gustó, a ver esta",
+      "created_at": "2026-09-09T17:30:00Z",
+      "updated_at": "2026-09-17T00:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 62,
+    "fields": {
+      "user": 103,
+      "title": 43,
+      "status": "pending",
+      "rating": null,
+      "comment": "si, no la he visto, ya lo se",
+      "created_at": "2026-09-10T03:30:00Z",
+      "updated_at": "2026-09-18T13:30:00Z"
+    }
+  },
+  {
+    "model": "library.entry",
+    "pk": 63,
+    "fields": {
+      "user": 101,
+      "title": 35,
+      "status": "pending",
+      "rating": null,
+      "comment": "todo el mundo dice que da ansiedad y aun asi la quiero ver",
+      "created_at": "2026-09-10T04:30:00Z",
+      "updated_at": "2026-09-10T06:30:00Z"
+    }
+  }
+]

@@ -8,7 +8,9 @@ from django.urls import reverse
 
 
 def auth_register(request: HttpRequest):
-    if request.method == "POST":
+    if request.user.is_authenticated:
+        return redirect("dashboard")
+    elif request.method == "POST":
         username = request.POST.get("register-user", "")
         email = request.POST.get("register-email", "")
         password = request.POST.get("register-password", "")
@@ -38,8 +40,9 @@ def auth_register(request: HttpRequest):
 
 
 def auth_login(request: HttpRequest):
-
-    if request.method == "POST":
+    if request.user.is_authenticated:
+        return redirect("dashboard")
+    elif request.method == "POST":
         username = request.POST.get("login-user", "")
         password = request.POST.get("login-password", "")
         user = authenticate(request, username=username, password=password)
