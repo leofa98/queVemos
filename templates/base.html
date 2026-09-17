@@ -17,11 +17,11 @@
         <nav class="navbar navbar-expand-md bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
                 <a class="logo" href="{% url 'index' %}">Qu<span>é</span>Vemos</a>
-                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-md-end mt-3 mt-md-0" id="navbarNavAltMarkup">
-                    <div class="gap-2 navbar-nav w-100">
+                    <div class="navbar-nav w-100">
 
                         {% if user.is_authenticated %}
                             <div class="d-md-flex justify-content-md-start align-self-center w-100 ps-md-4">               
@@ -30,17 +30,22 @@
                             </div>
              
                             <div class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle py-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle py-2" href="#" role="button" data-bs-toggle="dropdown">
                                     <i class="bi bi-person-circle me-1"></i> {{ user.username }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-lg-end bg-body-secondary">
                                     <li><a class="dropdown-item" href="#">Mi perfil</a></li>
                                     <li><a class="dropdown-item" href={% url 'logout' %}>Cerrar sesión</a></li>
                                 </ul>
+                             
                             </div>
                         {% else %}
-                            <a class="btn btn-sm  btn-outline-light" href={% url 'login' %}>Entrar</a>
-                            <a class="btn btn-sm btn-outline-light" href={% url 'register' %}>Crear cuenta</a>
+
+                            <div class="d-md-flex justify-content-md-end align-self-center w-100 gap-2">
+                                <a class="btn btn-sm  btn-outline-light" href={% url 'login' %}>Entrar</a>
+                                <a class="btn btn-sm btn-outline-light" href={% url 'register' %}>Crear cuenta</a>
+                            </div>
+
                         {% endif %}
                     </div>
                 </div>

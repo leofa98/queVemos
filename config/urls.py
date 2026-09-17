@@ -23,4 +23,5 @@ urlpatterns = [
     path("", include("core.urls")),
     path("", include("accounts.urls")),
     path("", include("rooms.urls")),
+    path("", include("library.urls")),
 ]

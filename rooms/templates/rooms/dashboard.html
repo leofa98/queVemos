@@ -7,13 +7,135 @@
 {% block body %}
 
 <div class="dashboard" >
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between mb-4">
         <h2 class="my-2 text-primary">Mi Biblioteca</h2>
-        <button type="button" class="btn btn-primary align-self-center"><i class="bi bi-plus-circle  me-2"></i> Añadir título</button>
+        <button type="button" class="btn btn-primary align-self-center" data-bs-toggle="modal" data-bs-target="#addTitleModal"><i class="bi bi-plus-circle  me-2"></i> Añadir título</button>
     </div>
+    <form action="{% url 'dashboard' %}" method="get" class="mb-4">
+        <input type="hidden" name="status" value={{ request.GET.status|default:'' }}>
+        <input type="text" class="form-control form-control-lg" name="query" value={{ request.GET.query|default:'' }}>
+    </form>
+    <div class="d-flex gap-3 flex-wrap mb-4">
+        <a class="btn btn-outline-primary {% if request.GET.status == '' or not request.GET.status %} active {% endif %}" data-status="" href="?query={{ request.GET.query }}">
+            Todas
+        </a>
+        <a class="btn btn-outline-primary {% if request.GET.status == 'seen' %} active {% endif %}" data-status="seen" href="?status=seen&query={{ request.GET.query }}">
+            Vistas
+        </a>
+        <a class="btn btn-outline-primary {% if request.GET.status == 'pending' %} active {% endif %}" data-status="pending" href="?status=pending&query={{ request.GET.query }}">
+            Pendientes
+        </a>
+        <a class="btn btn-outline-primary {% if request.GET.status == 'dropped' %} active {% endif %}" data-status="dropped" href="?status=dropped&query={{ request.GET.query }}">
+            Abandonados
+        </a>
+    </div>
+    <div class="mb-5">
+        {% for entry in page_obj.object_list %}
+            <div data-entryId="{{ entry.id }}" class="entry-card row border border-secondary p-4 mb-3 rounded-2 align-items-center">
+                <div class="col-md">
+                    <h5 class="text-primary">
+                        <b>{{ entry.title.name }}</b>
+                        <span class="text-secondary fw-normal">({{ entry.title.year }})</span>
+                    </h5>
+                    <p class="text-secondary mt-2">{{ entry.title.get_media_type_display }}</p>
+
+                    {% for genre in entry.title.genres.all %}
+                        <span class="badge rounded-pill text-bg-secondary">{{ genre }}</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md text-end justify-content-end align-content-center d-flex gap-2 mt-4 mt-md-0">
+                    {% if entry.status == "pending" %}
+                        <div class="d-inline-flex px-2 py-1 fw-semibold text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-2">
+                            {{ entry.get_status_display }}
+                        </div>
+                    {% elif entry.status == "seen" %}
+                        <div class="d-inline-flex px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">
+                            {{ entry.get_status_display }}
+                        </div>
+                    {% else %}
+                        <div class="d-inline-flex px-2 py-1 fw-semibold text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle rounded-2">
+                            {{ entry.get_status_display }}
+                        </div>
+                    {% endif %}
+
+                    <button data-entryId="{{ entry.id }}" type="button" class="btn btn-sm btn-outline-primary entry-card-edit">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+    
+                    <button data-entryId="{{ entry.id }}" type="button" class="btn btn-sm btn-outline-danger entry-card-delete">
+                        <i class="bi bi-x"></i>
+                    </button>
+
+                </div>
+            </div>         
+        {% empty %}
+            <div class="alert alert-primary" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% if page_obj.paginator.num_pages > 1 %}
+        <div class="d-flex align-items-center justify-content-center">
+            <nav>
+                <ul class="pagination">
+            
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?status={{ request.GET.status }}&query={{ request.GET.query }}&page={{ page_obj.previous_page_number }}">
+                                <span><i class="bi bi-arrow-left"></i></span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="?status={{ request.GET.status }}&query={{ request.GET.query }}&page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+                    {% endif %}
+                    <li class="page-item active"><a class="page-link" href="?status={{ request.GET.status }}&query={{ request.GET.query }}&page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?status={{ request.GET.status }}&query={{ request.GET.query }}&page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="?status={{ request.GET.status }}&query={{ request.GET.query }}&page={{ page_obj.next_page_number }}">
+                                <span><i class="bi bi-arrow-right"></i></span> 
+                            </a>
+                        </li>
+                    {% endif %}
+                
+                </ul>
+            </nav>
+        </div>
+    {% endif %}
 
 
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="addTitleModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="{% url 'entry_new' %}" method="post">
+                {% csrf_token %}
+     
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addTitleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close text-light" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+            
+                    <label for="disabledSelect" class="form-label text-secondary">SELECCIONAR TÍTULO</label>
+                    <select class="form-select">
+
+                        <option disabled selected>Selecciona un título</option>
+                        {% for title in titles %}
+                            <option value="{{ title.id }}">{{ title }}</option>
+                        {% endfor %}
+                    </select>
+            
+                </div>
+                <div class="modal-footer d-flex justify-content-center align-items-center">
+                    <input type="submit" class="btn btn-primary" value="Guardar"/>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
