@@ -11,67 +11,25 @@
         <h2 class="my-2 text-primary">Mi Biblioteca</h2>
         <button type="button" class="btn btn-primary align-self-center" data-bs-toggle="modal" data-bs-target="#addTitleModal"><i class="bi bi-plus-circle  me-2"></i> Añadir título</button>
     </div>
-    <form action="{% url 'dashboard' %}" method="get" class="mb-4">
-        <input type="hidden" name="status" value={{ request.GET.status|default:'' }}>
-        <input type="text" class="form-control form-control-lg" name="query" value={{ request.GET.query|default:'' }}>
-    </form>
+    <div class="mb-4">
+        <input type="text" id="search-input" class="form-control form-control-lg" name="query" value={{ request.GET.query|default:'' }}>
+    </div>
     <div class="d-flex gap-3 flex-wrap mb-4">
-        <a class="btn btn-outline-primary {% if request.GET.status == '' or not request.GET.status %} active {% endif %}" data-status="" href="?query={{ request.GET.query }}">
+        <a class="btn btn-outline-primary status-chip  {% if request.GET.status == '' or not request.GET.status %} active {% endif %}" data-status="">
             Todas
         </a>
-        <a class="btn btn-outline-primary {% if request.GET.status == 'seen' %} active {% endif %}" data-status="seen" href="?status=seen&query={{ request.GET.query }}">
+        <a class="btn btn-outline-primary status-chip {% if request.GET.status == 'seen' %} active {% endif %}" data-status="seen">
             Vistas
         </a>
-        <a class="btn btn-outline-primary {% if request.GET.status == 'pending' %} active {% endif %}" data-status="pending" href="?status=pending&query={{ request.GET.query }}">
+        <a class="btn btn-outline-primary status-chip {% if request.GET.status == 'pending' %} active {% endif %}" data-status="pending">
             Pendientes
         </a>
-        <a class="btn btn-outline-primary {% if request.GET.status == 'dropped' %} active {% endif %}" data-status="dropped" href="?status=dropped&query={{ request.GET.query }}">
+        <a class="btn btn-outline-primary status-chip {% if request.GET.status == 'dropped' %} active {% endif %}" data-status="dropped">
             Abandonados
         </a>
     </div>
-    <div class="mb-5">
-        {% for entry in page_obj.object_list %}
-            <div data-entryId="{{ entry.id }}" class="entry-card row border border-secondary p-4 mb-3 rounded-2 align-items-center">
-                <div class="col-md">
-                    <h5 class="text-primary">
-                        <b>{{ entry.title.name }}</b>
-                        <span class="text-secondary fw-normal">({{ entry.title.year }})</span>
-                    </h5>
-                    <p class="text-secondary mt-2">{{ entry.title.get_media_type_display }}</p>
-
-                    {% for genre in entry.title.genres.all %}
-                        <span class="badge rounded-pill text-bg-secondary">{{ genre }}</span>
-                    {% endfor %}
-                </div>
-                <div class="col-md text-end justify-content-end align-content-center d-flex gap-2 mt-4 mt-md-0">
-                    {% if entry.status == "pending" %}
-                        <div class="d-inline-flex px-2 py-1 fw-semibold text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-2">
-                            {{ entry.get_status_display }}
-                        </div>
-                    {% elif entry.status == "seen" %}
-                        <div class="d-inline-flex px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">
-                            {{ entry.get_status_display }}
-                        </div>
-                    {% else %}
-                        <div class="d-inline-flex px-2 py-1 fw-semibold text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle rounded-2">
-                            {{ entry.get_status_display }}
-                        </div>
-                    {% endif %}
-
-                    <button data-entryId="{{ entry.id }}" type="button" class="btn btn-sm btn-outline-primary entry-card-edit">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                    <button type="submit" data-entryId="{{ entry.id }}" class="btn btn-sm btn-outline-danger entry-card-delete">
-                        <i class="bi bi-x"></i>
-                    </button>
-
-                </div>
-            </div>         
-        {% empty %}
-            <div class="alert alert-primary" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
+    <div id="entry-list" class="mb-5">
+        {% include "rooms/entry_list.html" with page_obj=page_obj %} 
     </div>
     {% if page_obj.paginator.num_pages > 1 %}
         <div class="d-flex align-items-center justify-content-center">
