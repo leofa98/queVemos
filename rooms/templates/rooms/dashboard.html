@@ -29,7 +29,7 @@
         </a>
     </div>
     <div id="entry-list" class="mb-5">
-        {% include "rooms/entry_list.html" with page_obj=page_obj %} 
+        {% include "library/entry_list.html" with page_obj=page_obj %} 
     </div>
     {% if page_obj.paginator.num_pages > 1 %}
         <div class="d-flex align-items-center justify-content-center">
@@ -92,14 +92,14 @@
                         <div class="col-lg mb-3 mb-lg-0">
                             <label for="disabledSelect" class="form-label text-secondary">ESTADO</label>
                             <div>
-                                <input value="pending" type="radio" class="btn-check" name="status" id="status-pending" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="status-pending">Pendiente</label>
+                                <input value="pending" type="radio" class="btn-check" name="status" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="status">Pendiente</label>
 
-                                <input value="seen" type="radio" class="btn-check" name="status" id="status-seen" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="status-seen">Visto</label>
+                                <input value="seen" type="radio" class="btn-check" name="status" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="status">Visto</label>
 
-                                <input value="dropped" type="radio" class="btn-check" name="status" id="status-dropped" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="status-dropped">Abandonado</label>
+                                <input value="dropped" type="radio" class="btn-check" name="status" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="status">Abandonado</label>
                             </div>
                         </div>
 
@@ -120,6 +120,65 @@
                 </div>
                 <div class="modal-footer d-flex justify-content-center align-items-center">
                     <input type="submit" class="btn btn-primary" value="Guardar"/>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form action="{% url 'entry_new' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editModalLabel">Añadir título</h1>
+                    <button type="button" class="btn-close text-light" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    {% if error_message %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error_message }}
+                        </div>
+                    {% endif %}
+                    <div class="mb-3">
+                        <label for="disabledSelect" class="form-label text-secondary">SELECCIONAR TÍTULO</label>
+                        <select name="title" class="form-select">
+                            <option disabled selected>Título</option>
+                            {% for title in titles %}
+                                <option value="{{ title.id }}">{{ title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg mb-3 mb-lg-0">
+                            <label for="disabledSelect" class="form-label text-secondary">ESTADO</label>
+                            <div class="edit-status">
+                                <input value="pending" type="radio" class="btn-check" name="status" id="status-pending" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="status-pending">Pendiente</label>
+
+                                <input value="seen" type="radio" class="btn-check" name="status" id="status-seen" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="status-seen">Visto</label>
+
+                                <input value="dropped" type="radio" class="btn-check" name="status" id="status-dropped" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="status-dropped">Abandonado</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg">
+                            <label for="rate" class="form-label text-secondary">VALORACIÓN</label>
+                            <input min="1" max="10" type="number" name="rating" class="form-control">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-secondary" for="comment">COMENTARIO</label>
+                        <textarea rows="4" name="comment" type="text" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center align-items-center">
+                    <input type="submit" class="btn btn-primary" id="save-edit" value="Guardar"/>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </form>

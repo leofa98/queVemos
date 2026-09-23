@@ -37,6 +37,44 @@ def entry_new(request: HttpRequest):
 
 
 @login_required
+def entry_edit(request: HttpRequest, entry_id):
+    if request.method == "POST":
+        entry = Entry.objects.get(pk=entry_id, user=request.user).first()
+
+        if not entry:
+            return JsonResponse({}, status="404")
+
+        title_id = request.POST.get("title", "")
+        status = request.POST.get("status", "")
+        rating = request.POST.get("rating", "")
+        comment = request.POST.get("comment", "")
+
+        new_title = Title.objects.get(pk=title_id).first()
+        if not new_title:
+            return JsonResponse({}, status="400")
+        if status not in ["seen", "pending", "dropped"]:
+            return JsonResponse({}, status="400")
+
+        if rating:
+            try:
+                rating = int(rating)
+                if 1 <= rating <= 10:
+                    return JsonResponse({}, status=400)
+            except ValueError:
+                return JsonResponse({}, status=400)
+        else:
+            rating = None
+
+        entry.status = status
+        entry.title = new_title
+        entry.comment = comment
+        entry.rating = rating
+        entry.save()
+
+        return render(request, "library/entry_card.html", {"entry": entry})
+
+
+@login_required
 def remove_entry(request: HttpRequest, entry_id):
     if request.method == "POST":
         entry = Entry.objects.filter(pk=entry_id, user=request.user).first()
@@ -77,6 +115,22 @@ def entry_list(request: HttpRequest):
 
         return render(
             request,
-            "rooms/entry_list.html",
+            "library/entry_list.html",
             {"message": message, "page_obj": page_obj, "titles": titles},
         )
+
+
+@login_required
+def entry_detail(request: HttpRequest, entry_id):
+    entry = Entry.objects.get(pk=entry_id, user=request.user)
+    if not entry:
+        return JsonResponse({}, status=404)
+    return JsonResponse(
+        {
+            "id": entry.id,
+            "title": entry.title.id,
+            "status": entry.status,
+            "rating": entry.rating,
+            "comment": entry.comment,
+        }
+    )

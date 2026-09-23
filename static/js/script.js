@@ -5,24 +5,50 @@ const csrfToken = d.querySelector("meta[name='csrf-token']").content;
 
 d.addEventListener("DOMContentLoaded", function () {
   const deleteModal = d.getElementById("deleteModal");
-  const entryCardDelete = d.querySelectorAll(".entry-card-delete");
+  const editModal = d.getElementById("editModal");
   const statusChips = d.querySelectorAll(".status-chip");
   const entryList = d.getElementById("entry-list");
   const searchInput = d.getElementById("search-input");
+  const editTitleSelectOptions = editModal.querySelectorAll("select>option");
+  const editStatusRadioButtons =
+    editModal.querySelectorAll(".edit-status input");
+  const editRating = editModal.querySelector("input[name='rating']");
+  const editComment = editModal.querySelector("textarea[name='comment']");
+
   let status = "";
   let query = "";
   let page = "";
-  entryList.addEventListener("click", (e) => {
+
+  entryList.addEventListener("click", async (e) => {
     if (e.target.closest(".entry-card-delete")) {
-      let entryId = e.target.dataset.entryid;
-      console.log("fdsd");
+      let entryId = e.target.closest(".entry-card-delete").dataset.entryid;
       deleteModal.dataset.entryid = entryId;
       new bootstrap.Modal(deleteModal).show();
-      d.getElementById("deleteConfirm").onclick = () => {
-        removeEntry(entryId);
+      d.getElementById("deleteConfirm").onclick = async () => {
+        await removeEntry(entryId);
         d.querySelector(`[data-entryId='${entryId}']`).remove();
         bootstrap.Modal.getInstance(deleteModal).hide();
       };
+    }
+
+    if (e.target.closest(".entry-card-edit")) {
+      let entryId = e.target.closest(".entry-card-edit").dataset.entryid;
+      let entryData = await getEntry(entryId);
+
+      console.log(entryData);
+
+      [...editTitleSelectOptions].map((option) => {
+        option.selected = option.value == entryData.title;
+      });
+
+      [...editStatusRadioButtons].map((option) => {
+        option.checked = option.value == entryData.status;
+      });
+
+      editRating.value = entryData.rating;
+      editComment.value = entryData.comment;
+      new bootstrap.Modal(editModal).show();
+      editModal.getElementById("save-edit").onclick = () => {};
     }
   });
 
@@ -72,6 +98,23 @@ async function removeEntry(entryId) {
   } catch (error) {
     console.error(error.message);
     return null;
+  }
+}
+
+async function getEntry(entryId) {
+  try {
+    console.log(`library/entry/${entryId}`);
+    let response = await fetch(`library/entry/${entryId}`);
+
+    if (!response.ok) {
+      throw Error(`Error ${response.status} ${response.statusText}`);
+    }
+
+    let data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error(error);
   }
 }
 

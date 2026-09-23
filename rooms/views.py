@@ -64,6 +64,6 @@ def entry_list(request: HttpRequest):
 
         return render(
             request,
-            "rooms/entry_list.html",
+            "library/entry_list.html",
             {"message": message, "page_obj": page_obj},
         )
