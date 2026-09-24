@@ -39,7 +39,7 @@ def entry_new(request: HttpRequest):
 @login_required
 def entry_edit(request: HttpRequest, entry_id):
     if request.method == "POST":
-        entry = Entry.objects.get(pk=entry_id, user=request.user).first()
+        entry = Entry.objects.get(pk=entry_id, user=request.user)
 
         if not entry:
             return JsonResponse({}, status="404")
@@ -49,7 +49,7 @@ def entry_edit(request: HttpRequest, entry_id):
         rating = request.POST.get("rating", "")
         comment = request.POST.get("comment", "")
 
-        new_title = Title.objects.get(pk=title_id).first()
+        new_title = Title.objects.get(pk=title_id)
         if not new_title:
             return JsonResponse({}, status="400")
         if status not in ["seen", "pending", "dropped"]:

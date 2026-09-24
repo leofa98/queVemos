@@ -9,12 +9,15 @@ d.addEventListener("DOMContentLoaded", function () {
   const statusChips = d.querySelectorAll(".status-chip");
   const entryList = d.getElementById("entry-list");
   const searchInput = d.getElementById("search-input");
-  const editTitleSelectOptions = editModal.querySelectorAll("select>option");
+  const editTitleSelect = editModal.querySelector("select");
   const editStatusRadioButtons =
     editModal.querySelectorAll(".edit-status input");
   const editRating = editModal.querySelector("input[name='rating']");
   const editComment = editModal.querySelector("textarea[name='comment']");
-
+  const debouncedFilter = debounce(async () => {
+    let entries = await filterEntries(query, status, page);
+    entryList.innerHTML = entries;
+  }, 1500);
   let status = "";
   let query = "";
   let page = "";
@@ -26,7 +29,8 @@ d.addEventListener("DOMContentLoaded", function () {
       new bootstrap.Modal(deleteModal).show();
       d.getElementById("deleteConfirm").onclick = async () => {
         await removeEntry(entryId);
-        d.querySelector(`[data-entryId='${entryId}']`).remove();
+        entryList.querySelector(`[data-entryId='${entryId}']`).remove();
+        debouncedFilter();
         bootstrap.Modal.getInstance(deleteModal).hide();
       };
     }
@@ -37,9 +41,7 @@ d.addEventListener("DOMContentLoaded", function () {
 
       console.log(entryData);
 
-      [...editTitleSelectOptions].map((option) => {
-        option.selected = option.value == entryData.title;
-      });
+      editTitleSelect.value = entryData.title;
 
       [...editStatusRadioButtons].map((option) => {
         option.checked = option.value == entryData.status;
@@ -47,17 +49,27 @@ d.addEventListener("DOMContentLoaded", function () {
 
       editRating.value = entryData.rating;
       editComment.value = entryData.comment;
+
       new bootstrap.Modal(editModal).show();
-      editModal.getElementById("save-edit").onclick = () => {};
+      editModal.querySelector("#save-edit").onclick = async () => {
+        let selectedStatusOption = [...editStatusRadioButtons].find(
+          (option) => option.checked,
+        );
+        await editEntry(
+          entryId,
+          editTitleSelect.value,
+          selectedStatusOption.value,
+          editRating.value,
+          editComment.value,
+        );
+        debouncedFilter();
+        bootstrap.Modal.getInstance(editModal).hide();
+      };
     }
   });
 
   searchInput.addEventListener("keyup", () => {
     query = searchInput.value.trim();
-    const debouncedFilter = debounce(async () => {
-      let entries = await filterEntries(query, status, page);
-      entryList.innerHTML = entries;
-    }, 2000);
     debouncedFilter();
   });
 
@@ -72,11 +84,6 @@ d.addEventListener("DOMContentLoaded", function () {
           chip.classList.remove("active");
         }
       });
-      const debouncedFilter = debounce(async () => {
-        let entries = await filterEntries(query, status, page);
-        entryList.innerHTML = entries;
-      }, 2000);
-
       debouncedFilter();
     });
   });
@@ -114,19 +121,50 @@ async function getEntry(entryId) {
 
     return data;
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
+    return null;
+  }
+}
+
+async function editEntry(entryId, title, status, rating, comment) {
+  try {
+    let response = await fetch(`library/${entryId}/edit`, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrfToken,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+
+      body: new URLSearchParams({
+        title: title,
+        status: status,
+        rating: rating,
+        comment: comment,
+      }),
+    });
+
+    if (!response.ok) {
+      throw Error(`Error ${response.status} ${response.statusText}`);
+    }
+    let data = await response.text();
+    return data;
+  } catch (error) {
+    console.error(error.message);
+    return null;
   }
 }
 
 async function filterEntries(query, status, page) {
   try {
-    let response = await fetch(
-      `library/entries?status=${status}&query=${query}&page=${page}`,
-      {
-        method: "GET",
-        headers: { "X-CSRFToken": csrfToken },
-      },
-    );
+    const params = new URLSearchParams({
+      status,
+      query,
+      page,
+    });
+    let response = await fetch(`library/entries?${params}`, {
+      method: "GET",
+      headers: { "X-CSRFToken": csrfToken },
+    });
 
     if (!response.ok) {
       throw new Error(`${response.status}: ${response.statusText}`);
