@@ -1,7 +1,12 @@
-{% for entry in page_obj.object_list %}
-   {% include "library/entry_card.html" with entry=entry %}       
-{% empty %}
-    <div class="alert alert-primary" role="alert">
-        {{ message }}
-    </div>
-{% endfor %}
+<div class="mb-4">
+    {% for entry in page_obj.object_list %}
+        {% include "library/entry_card.html" with entry=entry %}       
+    {% empty %}
+        <div class="alert alert-primary" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+<div id="pagination">
+    {% include "core/pagination.html" with page_obj=page_obj %}
+</div>

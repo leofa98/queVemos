@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 
 from catalog.models import Title
 from library.models import Entry
@@ -10,8 +10,7 @@ from library.models import Entry
 
 @login_required
 def entry_new(request: HttpRequest):
-
-    if request.user.is_authenticated and request.method == "POST":
+    if request.method == "POST":
         title_id = request.POST.get("title", "")
         status = request.POST.get("status", "")
         rating = request.POST.get("rating", "")
@@ -19,21 +18,64 @@ def entry_new(request: HttpRequest):
 
         try:
             title = Title.objects.get(pk=title_id)
-            Entry.objects.create(
-                user=request.user,
-                title=title,
-                status=status,
-                rating=rating,
-                comment=comment,
+
+        except Title.DoesNotExist:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "TITLE_NOT_FOUND",
+                    "message": "El título seleccionado no existe",
+                },
+                status=400,
             )
-            # return render(
-            #     request,
-            #     "rooms/dashboard.html",
-            #     {"message": "Entrada creada"},
-            # )
-            return redirect("dashboard")
-        except (IntegrityError, Title.DoesNotExist):
-            return redirect("dashboard")
+        except IntegrityError:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "INTEGRITY_ERROR",
+                    "message": "Ya existe una entrada para este título",
+                },
+                status=400,
+            )
+        if status not in ["seen", "pending", "dropped"]:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "INVALID_STATUS",
+                    "message": "El estado no es válido",
+                },
+                status=400,
+            )
+
+        if rating:
+            try:
+                rating = int(rating)
+                if not 1 <= rating <= 10:
+                    return JsonResponse(
+                        {
+                            "ok": False,
+                            "error": "INVALID_RATING",
+                            "message": "La valoración es inválida",
+                        }
+                    )
+            except ValueError:
+                return JsonResponse(
+                    {
+                        "ok": False,
+                        "error": "INVALID_RATING",
+                        "message": "La valoración es inválida",
+                    }
+                )
+        else:
+            rating = None
+        Entry.objects.create(
+            user=request.user,
+            title=title,
+            status=status,
+            rating=rating,
+            comment=comment,
+        )
+        return JsonResponse({"ok": True}, status=200)
 
 
 @login_required
@@ -42,7 +84,7 @@ def entry_edit(request: HttpRequest, entry_id):
         entry = Entry.objects.get(pk=entry_id, user=request.user)
 
         if not entry:
-            return JsonResponse({}, status="404")
+            return JsonResponse({}, status=404)
 
         title_id = request.POST.get("title", "")
         status = request.POST.get("status", "")
@@ -51,17 +93,45 @@ def entry_edit(request: HttpRequest, entry_id):
 
         new_title = Title.objects.get(pk=title_id)
         if not new_title:
-            return JsonResponse({}, status="400")
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "INVALID_TITLE",
+                    "message": "Título no seleccinado",
+                },
+                status=400,
+            )
         if status not in ["seen", "pending", "dropped"]:
-            return JsonResponse({}, status="400")
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "INVALID_STATUS",
+                    "message": "El estado no es válido",
+                },
+                status=400,
+            )
 
         if rating:
             try:
                 rating = int(rating)
-                if 1 <= rating <= 10:
-                    return JsonResponse({}, status=400)
+                if not 1 <= rating <= 10:
+                    return JsonResponse(
+                        {
+                            "ok": False,
+                            "error": "INVALID_RATING",
+                            "message": "La valoración no es válida",
+                        },
+                        status=400,
+                    )
             except ValueError:
-                return JsonResponse({}, status=400)
+                return JsonResponse(
+                    {
+                        "ok": True,
+                        "error": "INVALID_RATING",
+                        "message": "La valoración no es válida",
+                    },
+                    status=400,
+                )
         else:
             rating = None
 
@@ -71,7 +141,12 @@ def entry_edit(request: HttpRequest, entry_id):
         entry.rating = rating
         entry.save()
 
-        return render(request, "library/entry_card.html", {"entry": entry})
+        return JsonResponse(
+            {
+                "ok": True,
+            },
+            status=200,
+        )
 
 
 @login_required
@@ -79,9 +154,16 @@ def remove_entry(request: HttpRequest, entry_id):
     if request.method == "POST":
         entry = Entry.objects.filter(pk=entry_id, user=request.user).first()
         if not entry:
-            return JsonResponse({"ok": False}, status=404)
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "NOT_FOUND",
+                    "message": "Esta entrada no existe",
+                },
+                status=404,
+            )
         entry.delete()
-        return JsonResponse({"ok": True})
+        return JsonResponse({"ok": True}, status=200)
 
 
 @login_required
@@ -124,7 +206,14 @@ def entry_list(request: HttpRequest):
 def entry_detail(request: HttpRequest, entry_id):
     entry = Entry.objects.get(pk=entry_id, user=request.user)
     if not entry:
-        return JsonResponse({}, status=404)
+        return JsonResponse(
+            {
+                "ok": False,
+                "error": "NOT_FOUND",
+                "message": "Esta entrada no existe",
+            },
+            status=404,
+        )
     return JsonResponse(
         {
             "id": entry.id,

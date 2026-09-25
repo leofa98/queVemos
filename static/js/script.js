@@ -4,8 +4,11 @@ const d = document;
 const csrfToken = d.querySelector("meta[name='csrf-token']").content;
 
 d.addEventListener("DOMContentLoaded", function () {
-  const deleteModal = d.getElementById("deleteModal");
-  const editModal = d.getElementById("editModal");
+  const deleteModal = d.getElementById("delete-modal");
+  const editModal = d.getElementById("edit-modal");
+  const addTitleModal = d.getElementById("add-title-modal");
+  const addTitleButton = d.getElementById("add-title-btn");
+  const saveTitleButton = d.getElementById("save-title-btn");
   const statusChips = d.querySelectorAll(".status-chip");
   const entryList = d.getElementById("entry-list");
   const searchInput = d.getElementById("search-input");
@@ -14,14 +17,40 @@ d.addEventListener("DOMContentLoaded", function () {
     editModal.querySelectorAll(".edit-status input");
   const editRating = editModal.querySelector("input[name='rating']");
   const editComment = editModal.querySelector("textarea[name='comment']");
+  const addEntrySelect = addTitleModal.querySelector("select");
+  const addEntryStatusRadioButtons = addTitleModal.querySelectorAll(
+    ".add-title-status input",
+  );
+  const addEntryRating = addTitleModal.querySelector("input[name='rating']");
+  const addEntryComment = addTitleModal.querySelector(
+    "textarea[name='comment']",
+  );
+
   const debouncedFilter = debounce(async () => {
     let entries = await filterEntries(query, status, page);
     entryList.innerHTML = entries;
   }, 1500);
+
   let status = "";
   let query = "";
   let page = "";
 
+  addTitleButton.addEventListener("click", () => {
+    new Bootstrap.Modal(addTitleButton).show();
+  });
+
+  saveTitleButton.addEventListener("click", async () => {
+    let title = addEntrySelect.value;
+    let status = addEntryStatusRadioButtons.value;
+    let rating = addEntryRating.value;
+    let comment = addEntryComment.value;
+    console.log(status);
+    let response = await addEntry(title, status, rating, comment);
+    console.log(response);
+    if (response) {
+      bootstrap.Modal.getInstance(addTitleModal).hide();
+    }
+  });
   entryList.addEventListener("click", async (e) => {
     if (e.target.closest(".entry-card-delete")) {
       let entryId = e.target.closest(".entry-card-delete").dataset.entryid;
@@ -38,8 +67,6 @@ d.addEventListener("DOMContentLoaded", function () {
     if (e.target.closest(".entry-card-edit")) {
       let entryId = e.target.closest(".entry-card-edit").dataset.entryid;
       let entryData = await getEntry(entryId);
-
-      console.log(entryData);
 
       editTitleSelect.value = entryData.title;
 
@@ -89,6 +116,31 @@ d.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+async function addEntry(title, status, rating, comment) {
+  try {
+    let response = await fetch(`library/new`, {
+      method: "POST",
+      headers: { "X-CSRFToken": csrfToken },
+      body: new URLSearchParams({
+        title: title,
+        status: status,
+        rating: rating,
+        comment: comment,
+      }),
+    });
+
+    if (!response.ok) {
+      throw Error(`Error ${response.status}: ${response.statusText} `);
+    }
+
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    showToast("danger", error.message);
+    return null;
+  }
+}
+
 async function removeEntry(entryId) {
   try {
     let response = await fetch(`library/${entryId}/remove`, {
@@ -103,7 +155,7 @@ async function removeEntry(entryId) {
 
     return data;
   } catch (error) {
-    console.error(error.message);
+    showToast("danger", error.message);
     return null;
   }
 }
@@ -114,14 +166,14 @@ async function getEntry(entryId) {
     let response = await fetch(`library/entry/${entryId}`);
 
     if (!response.ok) {
-      throw Error(`Error ${response.status} ${response.statusText}`);
+      throw Error(`Error ${response.status}: ${response.statusText}`);
     }
 
     let data = await response.json();
 
     return data;
   } catch (error) {
-    console.error(error.message);
+    showToast("danger", error.message);
     return null;
   }
 }
@@ -144,12 +196,12 @@ async function editEntry(entryId, title, status, rating, comment) {
     });
 
     if (!response.ok) {
-      throw Error(`Error ${response.status} ${response.statusText}`);
+      throw Error(`Error ${response.status}: ${response.statusText}`);
     }
-    let data = await response.text();
+    let data = await response.json();
     return data;
   } catch (error) {
-    console.error(error.message);
+    showToast("danger", error.message);
     return null;
   }
 }
@@ -167,14 +219,23 @@ async function filterEntries(query, status, page) {
     });
 
     if (!response.ok) {
-      throw new Error(`${response.status}: ${response.statusText}`);
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
 
     let data = await response.text();
     return data;
   } catch (error) {
+    showToast("danger", error.message);
     return null;
   }
+}
+
+function showToast(type, message) {
+  const toastElement = document.getElementById(`toast-${type}`);
+  let toastMessage = d.getElementById(`toast-${type}-msg`);
+  toastMessage.textContent = message;
+  const toast = new bootstrap.Toast(toastElement);
+  toast.show();
 }
 
 function debounce(callback, time) {
