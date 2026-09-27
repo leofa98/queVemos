@@ -21,7 +21,7 @@
 
   /* Texto y bordes */
   --qv-texto: #242830;
-  --qv-borde: #E3E7EE;
+  --qv-borde: #c7cbcf;
 
   /* Otros */
   --qv-radius: 12px;
@@ -172,7 +172,6 @@ label {
 
 /**************** COMPONENTS ****************/
 
-/* Welcome page */
 
 .welcome-container {
   max-width: 655px;
@@ -196,9 +195,6 @@ label {
 }
 
 
-
-/* Accounts page */
-
 .accounts-form {
   border-radius: 15px;
   max-width: 500px;
@@ -211,5 +207,20 @@ label {
   width: 100%;
 }
 
+.spinner-grow{
+  width: 7rem;
+  height: 7rem;
+}
+
+
+#invitation-code{
+  max-width: 150px;
+  letter-spacing: 6px;
+}
+
 
 /**************** UTILITIES ****************/
+
+.border-dashed {
+  border-style: dashed !important;
+}

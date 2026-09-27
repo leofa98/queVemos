@@ -1,0 +1,12 @@
+<div class="mb-4">
+    {% for room in page_obj.object_list %}
+        {% include "rooms/room_card.html" with room=room %}       
+    {% empty %}
+        <div class="alert alert-primary" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+<div id="paginator" class="mb-4">
+    {% include "core/pagination.html" with page_obj=page_obj %}
+</div>

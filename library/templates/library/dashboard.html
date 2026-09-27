@@ -1,12 +1,18 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block extra_js %}
+    <script defer src="{% static 'library/library.js' %}"></script>
+{% endblock %}
+
 {% block title %}Panel{% endblock %}
 
 {% block body %}
 
 <div class="dashboard d-flex flex-column flex-grow-1" >
     <div class="d-flex justify-content-between mb-4">
-        <h2 class="my-2 text-primary">Mi Biblioteca</h2>
+        <h2 class="my-2 text-primary">Mi biblioteca</h2>
         <button id="add-title-btn" type="button" class="btn btn-primary align-self-center" data-bs-toggle="modal" data-bs-target="#add-title-modal"><i class="bi bi-plus-circle  me-2"></i> Añadir título</button>
     </div>
     <div class="mb-4">
@@ -26,11 +32,11 @@
             Abandonados
         </a>
     </div>
-    <div id="entry-list" class="mb-5">
-        {% include "library/entry_list.html" with page_obj=page_obj %} 
+    <div id="entry-list">
+        {% include "library/entry_list.html" with page_obj=page_obj message=message %} 
     </div>
     <div id="spinner" class="d-flex flex-column flex-grow-1 justify-content-center align-items-center mb-5 d-none">
-        <div class="spinner-grow text-primary" style="width: 7rem; height: 7rem;" role="status">
+        <div class="spinner-grow text-primary" role="status">
         </div>
     </div>
 </div>
@@ -39,7 +45,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="add-title-modal-label">Añadir título</h1>
+                <h1 class="modal-title fs-5 text-primary" id="add-title-modal-label">Añadir título</h1>
                 <button type="button" class="btn-close text-light" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -94,7 +100,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="editModalLabel">Editar entrada</h1>
+                <h1 class="modal-title fs-5 text-primary" id="editModalLabel">Editar entrada</h1>
                 <button type="button" class="btn-close text-light" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -160,3 +166,4 @@
 </div>
 
 {% endblock %}
+

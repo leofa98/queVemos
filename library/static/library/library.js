@@ -63,6 +63,7 @@ d.addEventListener("DOMContentLoaded", function () {
       editRating.value = editRating.disabled ? "" : editRating.value;
     });
   });
+
   addTitleButton.addEventListener("click", () => {
     [...addEntryStatusRadioButtons].map((option) =>
       option.value == "pending"
@@ -86,13 +87,14 @@ d.addEventListener("DOMContentLoaded", function () {
     let response = await addEntry(title, status, rating, comment);
     if (response) {
       page = 1;
-      debouncedFilter();
-      showToast("success", response.message);
       entryList.classList.add("d-none");
       spinner.classList.remove("d-none");
+      debouncedFilter();
+      showToast("success", response.message);
       addTitleModal.hide();
     }
   });
+
   entryList.addEventListener("click", async (e) => {
     if (e.target.closest(".entry-card-delete")) {
       let entryId = e.target.closest(".entry-card-delete").dataset.entryid;
@@ -101,6 +103,8 @@ d.addEventListener("DOMContentLoaded", function () {
       d.getElementById("deleteConfirm").onclick = async () => {
         let response = await removeEntry(entryId);
         if (response) {
+          entryList.classList.add("d-none");
+          spinner.classList.remove("d-none");
           debouncedFilter();
           showToast("success", response.message);
           deleteModal.hide();
@@ -158,6 +162,8 @@ d.addEventListener("DOMContentLoaded", function () {
   searchInput.addEventListener("keyup", () => {
     query = searchInput.value.trim();
     page = 1;
+    entryList.classList.add("d-none");
+    spinner.classList.remove("d-none");
     debouncedFilter();
   });
 
@@ -181,7 +187,7 @@ d.addEventListener("DOMContentLoaded", function () {
 });
 
 async function addEntry(title, status, rating, comment) {
-  let data = await apiRequest(`/library/new`, {
+  let data = await apiFetch(`/library/new`, {
     method: "POST",
     headers: { "X-CSRFToken": csrfToken },
     body: new URLSearchParams({
@@ -195,7 +201,7 @@ async function addEntry(title, status, rating, comment) {
 }
 
 async function removeEntry(entryId) {
-  let data = await apiRequest(`/library/${entryId}/remove`, {
+  let data = await apiFetch(`/library/${entryId}/remove`, {
     method: "POST",
     headers: { "X-CSRFToken": csrfToken },
   });
@@ -203,12 +209,12 @@ async function removeEntry(entryId) {
 }
 
 async function getEntry(entryId) {
-  let data = await apiRequest(`/library/entry/${entryId}`, { method: "GET" });
+  let data = await apiFetch(`/library/entry/${entryId}`, { method: "GET" });
   return data;
 }
 
 async function editEntry(entryId, title, status, rating, comment) {
-  let data = await apiRequest(`/library/${entryId}/edit`, {
+  let data = await apiFetch(`/library/${entryId}/edit`, {
     method: "POST",
     headers: {
       "X-CSRFToken": csrfToken,
@@ -226,62 +232,14 @@ async function editEntry(entryId, title, status, rating, comment) {
 }
 
 async function filterEntries(query, status, page) {
-  try {
-    const params = new URLSearchParams({
-      status,
-      query,
-      page,
-    });
-    let response = await fetch(`/library/entries?${params}`, {
-      method: "GET",
-      headers: { "X-CSRFToken": csrfToken },
-    });
-
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(
-        data.message || `Error ${response.status}: ${response.statusText}`,
-      );
-    }
-
-    let data = await response.text();
-    return data;
-  } catch (error) {
-    showToast("danger", error.message);
-    return null;
-  }
-}
-async function apiRequest(url, options) {
-  try {
-    let response = await fetch(url, options);
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(
-        data.message || `Error ${response.status}: ${response.statusText}`,
-      );
-    }
-    let data = await response.json();
-    return data;
-  } catch (error) {
-    showToast("danger", error.message);
-    return null;
-  }
-}
-
-function debounce(callback, time) {
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      callback(...args);
-    }, time);
-  };
-}
-
-function showToast(type, message) {
-  const toastElement = document.getElementById(`toast-${type}`);
-  let toastMessage = d.getElementById(`toast-${type}-msg`);
-  toastMessage.textContent = message;
-  const toast = new bootstrap.Toast(toastElement);
-  toast.show();
+  const params = new URLSearchParams({
+    status,
+    query,
+    page,
+  });
+  let data = await apiFetchText(`/library/entries?${params}`, {
+    method: "GET",
+    headers: { "X-CSRFToken": csrfToken },
+  });
+  return data;
 }

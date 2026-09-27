@@ -1,10 +1,10 @@
 {% if page_obj.paginator.num_pages > 1 %}
     <div class="d-flex align-items-center justify-content-center">
         <nav>
-            <ul class="pagination">
+            <ul class="pagination m-0">
                 {% if page_obj.has_previous %}
                     <li class="page-item"  data-page-num="{{ page_obj.previous_page_number }}">
-                        <p class="page-link">
+                        <p class="m-0 page-link">
                             <span><i class="bi bi-arrow-left"></i></span>
                         </p>
                     </li>
@@ -22,7 +22,7 @@
                         <span class="page-link">{{ page_obj.next_page_number }}</span>
                     </li>
                     <li class="page-item"  data-page-num="{{ page_obj.next_page_number }}">
-                        <p class="page-link">
+                        <p class="m-0 page-link">
                             <span><i class="bi bi-arrow-right"></i></span> 
                         </p>
                     </li>
