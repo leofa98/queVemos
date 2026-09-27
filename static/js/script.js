@@ -4,63 +4,107 @@ const d = document;
 const csrfToken = d.querySelector("meta[name='csrf-token']").content;
 
 d.addEventListener("DOMContentLoaded", function () {
-  const deleteModal = d.getElementById("delete-modal");
-  const editModal = d.getElementById("edit-modal");
-  const addTitleModal = d.getElementById("add-title-modal");
+  const deleteModalElement = d.getElementById("delete-modal");
+  const editModalElement = d.getElementById("edit-modal");
+  const addTitleModalElement = d.getElementById("add-title-modal");
+  const deleteModal = new bootstrap.Modal(deleteModalElement);
+  const editModal = new bootstrap.Modal(editModalElement);
+  const addTitleModal = new bootstrap.Modal(addTitleModalElement);
   const addTitleButton = d.getElementById("add-title-btn");
   const saveTitleButton = d.getElementById("save-title-btn");
   const statusChips = d.querySelectorAll(".status-chip");
   const entryList = d.getElementById("entry-list");
+  const spinner = d.getElementById("spinner");
   const searchInput = d.getElementById("search-input");
-  const editTitleSelect = editModal.querySelector("select");
+  const editTitleSelect = editModalElement.querySelector("select");
   const editStatusRadioButtons =
-    editModal.querySelectorAll(".edit-status input");
-  const editRating = editModal.querySelector("input[name='rating']");
-  const editComment = editModal.querySelector("textarea[name='comment']");
-  const addEntrySelect = addTitleModal.querySelector("select");
-  const addEntryStatusRadioButtons = addTitleModal.querySelectorAll(
+    editModalElement.querySelectorAll(".edit-status input");
+  const editRating = editModalElement.querySelector("input[name='rating']");
+  const editComment = editModalElement.querySelector(
+    "textarea[name='comment']",
+  );
+  const addEntrySelect = addTitleModalElement.querySelector("select");
+  const addEntryStatusRadioButtons = addTitleModalElement.querySelectorAll(
     ".add-title-status input",
   );
-  const addEntryRating = addTitleModal.querySelector("input[name='rating']");
-  const addEntryComment = addTitleModal.querySelector(
+  const addEntryRating = addTitleModalElement.querySelector(
+    "input[name='rating']",
+  );
+  const addEntryComment = addTitleModalElement.querySelector(
     "textarea[name='comment']",
   );
 
   const debouncedFilter = debounce(async () => {
-    let entries = await filterEntries(query, status, page);
-    entryList.innerHTML = entries;
-  }, 1500);
+    try {
+      let entries = await filterEntries(query, status, page);
+      if (entries) {
+        entryList.innerHTML = entries;
+      }
+    } finally {
+      entryList.classList.remove("d-none");
+      spinner.classList.add("d-none");
+    }
+  }, 1000);
 
   let status = "";
   let query = "";
   let page = "";
 
+  [...editStatusRadioButtons].forEach((button) => {
+    button.addEventListener("change", (e) => {
+      editRating.disabled = e.target.value != "seen";
+      editRating.value = editRating.disabled ? "" : editRating.value;
+    });
+  });
+
+  [...addEntryStatusRadioButtons].forEach((button) => {
+    button.addEventListener("change", (e) => {
+      addEntryRating.disabled = e.target.value != "seen";
+      editRating.value = editRating.disabled ? "" : editRating.value;
+    });
+  });
   addTitleButton.addEventListener("click", () => {
-    new Bootstrap.Modal(addTitleButton).show();
+    [...addEntryStatusRadioButtons].map((option) =>
+      option.value == "pending"
+        ? (option.checked = true)
+        : (option.checked = false),
+    ).value;
+    addEntryRating.value = null;
+    addEntrySelect.value = "";
+    addEntryComment.value = null;
+    addTitleModal.show();
   });
 
   saveTitleButton.addEventListener("click", async () => {
     let title = addEntrySelect.value;
-    let status = addEntryStatusRadioButtons.value;
+    let status = [...addEntryStatusRadioButtons].find(
+      (option) => option.checked,
+    ).value;
+
     let rating = addEntryRating.value;
     let comment = addEntryComment.value;
-    console.log(status);
     let response = await addEntry(title, status, rating, comment);
-    console.log(response);
     if (response) {
-      bootstrap.Modal.getInstance(addTitleModal).hide();
+      page = 1;
+      debouncedFilter();
+      showToast("success", response.message);
+      entryList.classList.add("d-none");
+      spinner.classList.remove("d-none");
+      addTitleModal.hide();
     }
   });
   entryList.addEventListener("click", async (e) => {
     if (e.target.closest(".entry-card-delete")) {
       let entryId = e.target.closest(".entry-card-delete").dataset.entryid;
-      deleteModal.dataset.entryid = entryId;
-      new bootstrap.Modal(deleteModal).show();
+      deleteModalElement.dataset.entryid = entryId;
+      deleteModal.show();
       d.getElementById("deleteConfirm").onclick = async () => {
-        await removeEntry(entryId);
-        entryList.querySelector(`[data-entryId='${entryId}']`).remove();
-        debouncedFilter();
-        bootstrap.Modal.getInstance(deleteModal).hide();
+        let response = await removeEntry(entryId);
+        if (response) {
+          debouncedFilter();
+          showToast("success", response.message);
+          deleteModal.hide();
+        }
       };
     }
 
@@ -77,31 +121,50 @@ d.addEventListener("DOMContentLoaded", function () {
       editRating.value = entryData.rating;
       editComment.value = entryData.comment;
 
-      new bootstrap.Modal(editModal).show();
-      editModal.querySelector("#save-edit").onclick = async () => {
+      editRating.disabled =
+        entryData.status == "pending" || entryData.status == "dropped";
+
+      editModal.show();
+      editModalElement.querySelector("#save-edit").onclick = async () => {
         let selectedStatusOption = [...editStatusRadioButtons].find(
           (option) => option.checked,
         );
-        await editEntry(
+
+        let response = await editEntry(
           entryId,
           editTitleSelect.value,
           selectedStatusOption.value,
           editRating.value,
           editComment.value,
         );
-        debouncedFilter();
-        bootstrap.Modal.getInstance(editModal).hide();
+
+        if (response) {
+          debouncedFilter();
+          showToast("success", response.message);
+          entryList.classList.add("d-none");
+          spinner.classList.remove("d-none");
+          editModal.hide();
+        }
       };
+    }
+    if (e.target.closest(".page-item")) {
+      entryList.classList.add("d-none");
+      spinner.classList.remove("d-none");
+      page = e.target.closest(".page-item").dataset.pageNum;
+      debouncedFilter();
     }
   });
 
   searchInput.addEventListener("keyup", () => {
     query = searchInput.value.trim();
+    page = 1;
     debouncedFilter();
   });
 
   statusChips.forEach((chip) => {
     chip.addEventListener("click", async (e) => {
+      entryList.classList.add("d-none");
+      spinner.classList.remove("d-none");
       status = chip.dataset.status;
 
       [...statusChips].map((chip) => {
@@ -111,99 +174,55 @@ d.addEventListener("DOMContentLoaded", function () {
           chip.classList.remove("active");
         }
       });
+      page = 1;
       debouncedFilter();
     });
   });
 });
 
 async function addEntry(title, status, rating, comment) {
-  try {
-    let response = await fetch(`library/new`, {
-      method: "POST",
-      headers: { "X-CSRFToken": csrfToken },
-      body: new URLSearchParams({
-        title: title,
-        status: status,
-        rating: rating,
-        comment: comment,
-      }),
-    });
-
-    if (!response.ok) {
-      throw Error(`Error ${response.status}: ${response.statusText} `);
-    }
-
-    let data = await response.json();
-    return data;
-  } catch (error) {
-    showToast("danger", error.message);
-    return null;
-  }
+  let data = await apiRequest(`/library/new`, {
+    method: "POST",
+    headers: { "X-CSRFToken": csrfToken },
+    body: new URLSearchParams({
+      title: title,
+      status: status,
+      rating: rating,
+      comment: comment,
+    }),
+  });
+  return data;
 }
 
 async function removeEntry(entryId) {
-  try {
-    let response = await fetch(`library/${entryId}/remove`, {
-      method: "POST",
-      headers: { "X-CSRFToken": csrfToken },
-    });
-    if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${response.statusText}`);
-    }
-
-    let data = await response.json();
-
-    return data;
-  } catch (error) {
-    showToast("danger", error.message);
-    return null;
-  }
+  let data = await apiRequest(`/library/${entryId}/remove`, {
+    method: "POST",
+    headers: { "X-CSRFToken": csrfToken },
+  });
+  return data;
 }
 
 async function getEntry(entryId) {
-  try {
-    console.log(`library/entry/${entryId}`);
-    let response = await fetch(`library/entry/${entryId}`);
-
-    if (!response.ok) {
-      throw Error(`Error ${response.status}: ${response.statusText}`);
-    }
-
-    let data = await response.json();
-
-    return data;
-  } catch (error) {
-    showToast("danger", error.message);
-    return null;
-  }
+  let data = await apiRequest(`/library/entry/${entryId}`, { method: "GET" });
+  return data;
 }
 
 async function editEntry(entryId, title, status, rating, comment) {
-  try {
-    let response = await fetch(`library/${entryId}/edit`, {
-      method: "POST",
-      headers: {
-        "X-CSRFToken": csrfToken,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+  let data = await apiRequest(`/library/${entryId}/edit`, {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": csrfToken,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
 
-      body: new URLSearchParams({
-        title: title,
-        status: status,
-        rating: rating,
-        comment: comment,
-      }),
-    });
-
-    if (!response.ok) {
-      throw Error(`Error ${response.status}: ${response.statusText}`);
-    }
-    let data = await response.json();
-    return data;
-  } catch (error) {
-    showToast("danger", error.message);
-    return null;
-  }
+    body: new URLSearchParams({
+      title: title,
+      status: status,
+      rating: rating,
+      comment: comment,
+    }),
+  });
+  return data;
 }
 
 async function filterEntries(query, status, page) {
@@ -213,13 +232,16 @@ async function filterEntries(query, status, page) {
       query,
       page,
     });
-    let response = await fetch(`library/entries?${params}`, {
+    let response = await fetch(`/library/entries?${params}`, {
       method: "GET",
       headers: { "X-CSRFToken": csrfToken },
     });
 
     if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${response.statusText}`);
+      const data = await response.json();
+      throw new Error(
+        data.message || `Error ${response.status}: ${response.statusText}`,
+      );
     }
 
     let data = await response.text();
@@ -229,13 +251,21 @@ async function filterEntries(query, status, page) {
     return null;
   }
 }
-
-function showToast(type, message) {
-  const toastElement = document.getElementById(`toast-${type}`);
-  let toastMessage = d.getElementById(`toast-${type}-msg`);
-  toastMessage.textContent = message;
-  const toast = new bootstrap.Toast(toastElement);
-  toast.show();
+async function apiRequest(url, options) {
+  try {
+    let response = await fetch(url, options);
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(
+        data.message || `Error ${response.status}: ${response.statusText}`,
+      );
+    }
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    showToast("danger", error.message);
+    return null;
+  }
 }
 
 function debounce(callback, time) {
@@ -246,4 +276,12 @@ function debounce(callback, time) {
       callback(...args);
     }, time);
   };
+}
+
+function showToast(type, message) {
+  const toastElement = document.getElementById(`toast-${type}`);
+  let toastMessage = d.getElementById(`toast-${type}-msg`);
+  toastMessage.textContent = message;
+  const toast = new bootstrap.Toast(toastElement);
+  toast.show();
 }

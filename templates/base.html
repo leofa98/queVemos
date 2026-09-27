@@ -26,9 +26,9 @@
                     <div class="navbar-nav w-100">
 
                         {% if user.is_authenticated %}
-                            <div class="d-md-flex justify-content-md-start align-self-center w-100 ps-md-4">               
-                                <a class="nav-link active"  href={% url 'dashboard' %}>Biblioteca</a>
-                                <a class="nav-link"  href={% url 'register' %}>Salas</a>                   
+                            <div class="d-md-flex justify-content-md-start align-self-center w-100 ps-md-4">
+                                <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"  href={% url 'dashboard' %}>Biblioteca</a>
+                                <a class="nav-link {% if request.resolver_match.url_name.trim == 'rooms' %}active{% endif %}"  href={% url 'register' %}>Salas</a>                   
                             </div>
              
                             <div class="nav-item dropdown">
@@ -57,7 +57,7 @@
 
     <main class="body m-3 m-md-5 d-flex flex-column flex-grow-1">
         {% block body %}{% endblock %}
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast-container position-fixed top-0 end-0 p-3">
         <div id="toast-success" class="toast align-items-center text-bg-success border-0" role="alert">
             <div class="d-flex">
                 <div class="toast-body" id="toast-success-msg"></div>

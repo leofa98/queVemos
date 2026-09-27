@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="dashboard" >
+<div class="dashboard d-flex flex-column flex-grow-1" >
     <div class="d-flex justify-content-between mb-4">
         <h2 class="my-2 text-primary">Mi Biblioteca</h2>
         <button id="add-title-btn" type="button" class="btn btn-primary align-self-center" data-bs-toggle="modal" data-bs-target="#add-title-modal"><i class="bi bi-plus-circle  me-2"></i> Añadir título</button>
@@ -29,6 +29,10 @@
     <div id="entry-list" class="mb-5">
         {% include "library/entry_list.html" with page_obj=page_obj %} 
     </div>
+    <div id="spinner" class="d-flex flex-column flex-grow-1 justify-content-center align-items-center mb-5 d-none">
+        <div class="spinner-grow text-primary" style="width: 7rem; height: 7rem;" role="status">
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="add-title-modal">
@@ -47,7 +51,7 @@
                 <div class="mb-3">
                     <label for="disabledSelect" class="form-label text-secondary">SELECCIONAR TÍTULO</label>
                     <select name="title" class="form-select">
-                        <option disabled selected>Selecciona un título</option>
+                        <option value="" disabled selected>Selecciona un título</option>
                         {% for title in titles %}
                             <option value="{{ title.id }}">{{ title }}</option>
                         {% endfor %}

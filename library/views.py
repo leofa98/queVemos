@@ -16,6 +16,16 @@ def entry_new(request: HttpRequest):
         rating = request.POST.get("rating", "")
         comment = request.POST.get("comment", "")
 
+        if not title_id:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "TITLE_NOT_FOUND",
+                    "message": "Selecciona un título",
+                },
+                status=400,
+            )
+
         try:
             title = Title.objects.get(pk=title_id)
 
@@ -33,7 +43,7 @@ def entry_new(request: HttpRequest):
                 {
                     "ok": False,
                     "error": "INTEGRITY_ERROR",
-                    "message": "Ya existe una entrada para este título",
+                    "message": "El título introducido no es válido",
                 },
                 status=400,
             )
@@ -55,27 +65,50 @@ def entry_new(request: HttpRequest):
                         {
                             "ok": False,
                             "error": "INVALID_RATING",
-                            "message": "La valoración es inválida",
-                        }
+                            "message": "La valoración debe ser un número entre 1 y 10",
+                        },
+                        status=400,
                     )
+                elif status != "seen":
+                    rating = None
             except ValueError:
                 return JsonResponse(
                     {
                         "ok": False,
                         "error": "INVALID_RATING",
-                        "message": "La valoración es inválida",
-                    }
+                        "message": "La valoración debe ser un número entre 1 y 10",
+                    },
+                    status=400,
                 )
+
         else:
             rating = None
-        Entry.objects.create(
-            user=request.user,
-            title=title,
-            status=status,
-            rating=rating,
-            comment=comment,
+
+        try:
+            Entry.objects.create(
+                user=request.user,
+                title=title,
+                status=status,
+                rating=rating,
+                comment=comment,
+            )
+        except IntegrityError:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "INTEGRITY_ERROR",
+                    "message": "Ya existe una entrada para este título",
+                },
+                status=400,
+            )
+
+        return JsonResponse(
+            {
+                "ok": True,
+                "message": "Entrada creada",
+            },
+            status=200,
         )
-        return JsonResponse({"ok": True}, status=200)
 
 
 @login_required
@@ -84,7 +117,14 @@ def entry_edit(request: HttpRequest, entry_id):
         entry = Entry.objects.get(pk=entry_id, user=request.user)
 
         if not entry:
-            return JsonResponse({}, status=404)
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "INVALID_TITLE",
+                    "message": "La entrada no existe",
+                },
+                status=404,
+            )
 
         title_id = request.POST.get("title", "")
         status = request.POST.get("status", "")
@@ -119,31 +159,44 @@ def entry_edit(request: HttpRequest, entry_id):
                         {
                             "ok": False,
                             "error": "INVALID_RATING",
-                            "message": "La valoración no es válida",
+                            "message": "La valoración debe ser un número entre 1 y 10",
                         },
                         status=400,
                     )
+                elif status != "seen":
+                    rating = None
             except ValueError:
                 return JsonResponse(
                     {
                         "ok": True,
                         "error": "INVALID_RATING",
-                        "message": "La valoración no es válida",
+                        "message": "La valoración debe ser un número entre 1 y 10",
                     },
                     status=400,
                 )
         else:
             rating = None
 
-        entry.status = status
-        entry.title = new_title
-        entry.comment = comment
-        entry.rating = rating
-        entry.save()
+        try:
+            entry.status = status
+            entry.title = new_title
+            entry.comment = comment
+            entry.rating = rating
+            entry.save()
+        except IntegrityError:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "INTEGRITY_ERROR",
+                    "message": "Ya existe una entrada para este título",
+                },
+                status=400,
+            )
 
         return JsonResponse(
             {
                 "ok": True,
+                "message": "Entrada editada",
             },
             status=200,
         )
@@ -163,7 +216,13 @@ def remove_entry(request: HttpRequest, entry_id):
                 status=404,
             )
         entry.delete()
-        return JsonResponse({"ok": True}, status=200)
+        return JsonResponse(
+            {
+                "ok": True,
+                "message": "Entrada eliminada",
+            },
+            status=200,
+        )
 
 
 @login_required
@@ -216,10 +275,12 @@ def entry_detail(request: HttpRequest, entry_id):
         )
     return JsonResponse(
         {
+            "ok": True,
             "id": entry.id,
             "title": entry.title.id,
             "status": entry.status,
             "rating": entry.rating,
             "comment": entry.comment,
-        }
+        },
+        status=200,
     )
