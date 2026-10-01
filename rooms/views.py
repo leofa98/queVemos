@@ -3,12 +3,13 @@ import string
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db import IntegrityError
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
 
 from catalog.models import Title
 from library.models import Entry
-from rooms.models import Room
+from rooms.models import Membership, Room
 
 
 def dashboard(request: HttpRequest):
@@ -20,11 +21,12 @@ def dashboard(request: HttpRequest):
     page = request.GET.get("page", None)
     titles = Title.objects.all()
 
-    has_entries = Entry.objects.exists()
-
     entries = Entry.objects.filter(user=request.user)
 
     message = ""
+
+    if not entries.exists():
+        message = "No tienes entradas todavía"
 
     if status:
         entries = entries.filter(status=status)
@@ -32,10 +34,7 @@ def dashboard(request: HttpRequest):
     if query:
         entries = entries.filter(title__name__icontains=query)
 
-    if not has_entries:
-        message = "No tienes entradas todavía"
-
-    elif has_entries and not entries.exists():
+    if not entries.exists():
         message = "No hay resultados para tu búsqueda"
 
     p = Paginator(entries, 5)
@@ -62,19 +61,16 @@ def rooms(request: HttpRequest):
         status = request.GET.get("status", "").strip()
         page = request.GET.get("page", None)
 
-        rooms = Room.objects.filter(host=request.user)
-
-        has_rooms = Room.objects.exists()
+        rooms = Room.objects.filter(memberships__user=request.user)
 
         message = ""
-
-        if status:
-            rooms.filter(status=status)
-
-        if not has_rooms:
+        if not rooms.exists():
             message = "No tienes salas asociadas"
 
-        if has_rooms and not rooms.exists():
+        if status:
+            rooms = rooms.filter(status=status)
+
+        if not rooms.exists():
             message = "No hay resultados para tu búsqueda"
 
         p = Paginator(rooms, 5)
@@ -95,19 +91,17 @@ def room_list(request: HttpRequest):
         status = request.GET.get("status", "").strip()
         page = request.GET.get("page", None)
 
-        rooms = Room.objects.filter(host=request.user)
-
-        has_rooms = Room.objects.exists()
+        rooms = Room.objects.filter(memberships__user=request.user)
 
         message = ""
 
-        if status:
-            rooms.filter(status=status)
-
-        if not has_rooms:
+        if not rooms.exists():
             message = "No tienes salas asociadas"
 
-        if has_rooms and not rooms.exists():
+        if status:
+            rooms = rooms.filter(status=status)
+
+        if not rooms.exists():
             message = "No hay resultados para tu búsqueda"
 
         p = Paginator(rooms, 5)
@@ -128,7 +122,7 @@ def room_new(request: HttpRequest):
         if not name:
             return JsonResponse(
                 {
-                    "ok": True,
+                    "ok": False,
                     "error": "INTEGRITY_ERROR",
                     "message": "Completa el nombre de la sala",
                 },
@@ -143,11 +137,23 @@ def room_new(request: HttpRequest):
             if not repeated:
                 break
 
-        Room.objects.create(
+        room = Room.objects.create(
             name=name,
             host=request.user,
             invitation_code=invitation_code,
             allow_seen=allow_seen,
         )
+
+        try:
+            Membership.objects.create(user=request.user, room=room)
+        except IntegrityError:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "INTEGRITY_ERROR",
+                    "message": "Tu membresía ya existe",
+                },
+                status=400,
+            )
 
         return JsonResponse({"ok": True, "message": "Sala creada"}, status=200)

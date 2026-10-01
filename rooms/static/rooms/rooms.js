@@ -12,6 +12,7 @@ d.addEventListener("DOMContentLoaded", () => {
   const allowSeenCheck = d.getElementById("allow-seen");
   const roomList = d.getElementById("room-list");
   const spinner = d.getElementById("spinner");
+
   let status = "";
   let page = "";
   const debouncedFilter = debounce(async () => {
@@ -29,24 +30,26 @@ d.addEventListener("DOMContentLoaded", () => {
   createRoomBtn.addEventListener("click", async () => {
     roomNameInput.value = "";
     allowSeenCheck.checked = false;
-    createRoomBtnModal.addEventListener("click", async () => {
-      let name = roomNameInput.value;
-      console.log(name);
-      let allowSeen = allowSeenCheck.value;
-      let response = await addRoom(name, allowSeen);
+  });
 
-      if (response) {
-        roomList.classList.add("d-none");
-        spinner.classList.remove("d-none");
-        showToast("success", response.message);
-        debouncedFilter();
-      }
-    });
+  createRoomBtnModal.addEventListener("click", async () => {
+    let name = roomNameInput.value;
+    let allowSeen = allowSeenCheck.checked;
+    let response = await addRoom(name, allowSeen);
+
+    if (response) {
+      roomList.classList.add("d-none");
+      spinner.classList.remove("d-none");
+      showToast("success", response.message);
+      debouncedFilter();
+      addRoomModal.hide();
+    }
   });
 
   [...statusChips].forEach((chip) => {
     chip.addEventListener("click", (e) => {
       status = e.currentTarget.dataset.status;
+      console.log(status);
       [...statusChips].map((chip) => {
         if (chip.dataset.status == status) {
           chip.classList.add("active");
@@ -58,6 +61,15 @@ d.addEventListener("DOMContentLoaded", () => {
       spinner.classList.remove("d-none");
       debouncedFilter();
     });
+  });
+  roomList.addEventListener("click", (e) => {
+    if (e.target.closest(".page-item")) {
+      page = e.target.closest(".page-item").dataset.pageNum;
+      console.log(page);
+      roomList.classList.add("d-none");
+      spinner.classList.remove("d-none");
+      debouncedFilter();
+    }
   });
 });
 

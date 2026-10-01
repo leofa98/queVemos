@@ -1,24 +1,25 @@
 
 <div data-room-id="{{ room.id }}" class="mx-0 room-card row border border-secondary p-4 mb-3 rounded-2 align-items-center">
-    <div class="col-md">
-        <h5 class="text-primary">
-            <b>{{ room.name }}</b>
-            <span class="text-secondary fw-normal">({{ room.title.year }})</span>
-        </h5>
-        <span class="badge text-bg-warning-subtle">Warning</span>
-    </div>
-    <div class="col-md text-end justify-content-end align-content-center d-flex gap-2 mt-4 mt-md-0">
-        {% if entry.status == "open" %}
-            <div class="d-inline-flex px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">
-                {{ entry.get_status_display }}
+    <div class="col">
+        <div class="d-flex gap-3 align-items-center mb-3">
+            <h5 class="text-primary m-0">
+                <b>{{ room.name }}</b>
+            </h5>
+            <div class="d-inline-flex px-2 py-1 fw-semibold text-warning-emphasis bg-warning-subtle border border-warning-subtle rounded-2">
+                <small>
+                    Anfitrión
+                </small> 
             </div>
+        </div>
+        {% if winner %}
+         
         {% else %}
-            <div class="d-inline-flex px-2 py-1 fw-semibold text-danger-emphasis bg-danger-subtle border border-danger-subtle rounded-2">
-                {{ entry.get_status_display }}
-            </div>
+           <p class="text-secondary m-0"><small class="text-secodary">{% if room.memberships.count > 1 %} {{ room.memberships.count }} Miembro(s) {% else %} Sólo tú {% endif %}  · {% if room.candidates.count %} {{ room.candidates.count }} Candidato(s){% else %} Sin candidatos todavía{% endif %}</small></p>
         {% endif %}
-        <button data-room-id="{{ room.id }}" type="button" class="btn btnbtn-outline-primary room-card-edit">
+    </div>
+    <div class="col text-end justify-content-end align-content-center d-flex gap-2">
+        <a data-room-id="{{ room.id }}" type="button" class="btn btn-primary room-card-edit">
             Ir
-        </button>
+        </a>
     </div>
 </div>         
