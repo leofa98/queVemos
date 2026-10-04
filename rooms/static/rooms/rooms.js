@@ -12,6 +12,8 @@ d.addEventListener("DOMContentLoaded", () => {
   const allowSeenCheck = d.getElementById("allow-seen");
   const roomList = d.getElementById("room-list");
   const spinner = d.getElementById("spinner");
+  const btnJoinRoom = d.getElementById("btn-join-room");
+  const codeInput = d.getElementById("invitation-code");
 
   let status = "";
   let page = "";
@@ -49,7 +51,6 @@ d.addEventListener("DOMContentLoaded", () => {
   [...statusChips].forEach((chip) => {
     chip.addEventListener("click", (e) => {
       status = e.currentTarget.dataset.status;
-      console.log(status);
       [...statusChips].map((chip) => {
         if (chip.dataset.status == status) {
           chip.classList.add("active");
@@ -65,10 +66,17 @@ d.addEventListener("DOMContentLoaded", () => {
   roomList.addEventListener("click", (e) => {
     if (e.target.closest(".page-item")) {
       page = e.target.closest(".page-item").dataset.pageNum;
-      console.log(page);
       roomList.classList.add("d-none");
       spinner.classList.remove("d-none");
       debouncedFilter();
+    }
+  });
+  btnJoinRoom.addEventListener("click", async () => {
+    let code = codeInput.value.trim().toUpperCase();
+    let response = await joinRoom(code);
+    if (response) {
+      window.location.replace(`${response.redirect_url}`);
+      showToast("success", response.message);
     }
   });
 });
@@ -80,6 +88,17 @@ async function addRoom(name, allow_seen) {
     body: new URLSearchParams({
       name,
       allow_seen,
+    }),
+  });
+  return data;
+}
+
+async function joinRoom(invitation_code) {
+  let data = await apiFetch(`rooms/join`, {
+    method: "POST",
+    headers: { "X-CSRFToken": csrfToken },
+    body: new URLSearchParams({
+      invitation_code,
     }),
   });
   return data;

@@ -1,25 +1,38 @@
 
-<div data-room-id="{{ room.id }}" class="mx-0 room-card row border border-secondary p-4 mb-3 rounded-2 align-items-center">
+<div data-room-id="{{ room.id }}" class="mx-0 room-card row border {% if room.status == "closed" %}  bg-secondary-subtle {% else %} border-secondary  {% endif %}  p-4 mb-3 rounded-2 align-items-center">
     <div class="col">
-        <div class="d-flex gap-3 align-items-center mb-3">
-            <h5 class="text-primary m-0">
-                <b>{{ room.name }}</b>
-            </h5>
-            <div class="d-inline-flex px-2 py-1 fw-semibold text-warning-emphasis bg-warning-subtle border border-warning-subtle rounded-2">
-                <small>
-                    Anfitrión
-                </small> 
-            </div>
+        <div class="d-flex gap-3 align-items-center mb-2">
+            {% if room.status == "closed" %}
+                <h5 class="text-primary m-0">
+                    <b>{{ room.winner.title.name }}</b>
+                </h5>
+            {% else %}
+                <h5 class="text-primary m-0">
+                    <b>{{ room.name }}</b>
+                </h5>
+            {% endif %}
+            {% if room.host == request.user %}
+                <span class="badge text-warning-emphasis bg-warning-subtle">Anfitrión</span>
+            {% endif %}
         </div>
-        {% if winner %}
-         
+        {% if room.status == "closed" %}
+         <p class="text-secondary m-0"><small class="text-secodary">{{ room.name }}</small> · <small class="text-secodary">{{ room.closed_at|date:"d N" }}</small> </p>
         {% else %}
            <p class="text-secondary m-0"><small class="text-secodary">{% if room.memberships.count > 1 %} {{ room.memberships.count }} Miembro(s) {% else %} Sólo tú {% endif %}  · {% if room.candidates.count %} {{ room.candidates.count }} Candidato(s){% else %} Sin candidatos todavía{% endif %}</small></p>
         {% endif %}
     </div>
     <div class="col text-end justify-content-end align-content-center d-flex gap-2">
-        <a data-room-id="{{ room.id }}" type="button" class="btn btn-primary room-card-edit">
-            Ir
-        </a>
+
+
+        <p>{{ room.invitation_code }}</p>
+        {% if room.status == "closed" %}
+            <a data-room-id="{{ room.id }}" type="button" class="btn btn-outline-secondary room-card-edit">
+                Ver
+            </a>
+        {% else %}
+             <a data-room-id="{{ room.id }}" type="button" class="btn  btn-primary  room-card-edit">
+                Ir
+            </a>
+        {% endif %}
     </div>
 </div>         

@@ -51,7 +51,27 @@ def dashboard(request: HttpRequest):
     )
 
 
-@login_required
+def get_user_rooms(user, status, page):
+
+    rooms = Room.objects.filter(memberships__user=user)
+
+    message = ""
+    if not rooms.exists():
+        message = "No tienes salas asociadas"
+
+    if status:
+        rooms = rooms.filter(status=status)
+
+    if not rooms.exists():
+        message = "No hay resultados para tu búsqueda"
+
+    p = Paginator(rooms, 5)
+
+    page_obj = p.get_page(page)
+
+    return {"page_obj": page_obj, "message": message}
+
+
 def rooms(request: HttpRequest):
 
     if not request.user.is_authenticated:
@@ -61,56 +81,21 @@ def rooms(request: HttpRequest):
         status = request.GET.get("status", "").strip()
         page = request.GET.get("page", None)
 
-        rooms = Room.objects.filter(memberships__user=request.user)
+        obj = get_user_rooms(request.user, status, page)
 
-        message = ""
-        if not rooms.exists():
-            message = "No tienes salas asociadas"
-
-        if status:
-            rooms = rooms.filter(status=status)
-
-        if not rooms.exists():
-            message = "No hay resultados para tu búsqueda"
-
-        p = Paginator(rooms, 5)
-
-        page_obj = p.get_page(page)
-
-        return render(
-            request, "rooms/list.html", {"page_obj": page_obj, "message": message}
-        )
+        return render(request, "rooms/list.html", obj)
 
 
 @login_required
 def room_list(request: HttpRequest):
-    if not request.user.is_authenticated:
-        return redirect("index")
 
     if request.method == "GET":
         status = request.GET.get("status", "").strip()
         page = request.GET.get("page", None)
 
-        rooms = Room.objects.filter(memberships__user=request.user)
+        obj = get_user_rooms(request.user, status, page)
 
-        message = ""
-
-        if not rooms.exists():
-            message = "No tienes salas asociadas"
-
-        if status:
-            rooms = rooms.filter(status=status)
-
-        if not rooms.exists():
-            message = "No hay resultados para tu búsqueda"
-
-        p = Paginator(rooms, 5)
-
-        page_obj = p.get_page(page)
-
-        return render(
-            request, "rooms/room_list.html", {"page_obj": page_obj, "message": message}
-        )
+        return render(request, "rooms/room_list.html", obj)
 
 
 @login_required
@@ -157,3 +142,69 @@ def room_new(request: HttpRequest):
             )
 
         return JsonResponse({"ok": True, "message": "Sala creada"}, status=200)
+
+
+@login_required
+def room_join(request: HttpRequest):
+    if request.method == "POST":
+        invitation_code = request.POST.get("invitation_code", "")
+        try:
+            room = Room.objects.get(invitation_code=invitation_code)
+
+        except Room.DoesNotExist:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "DOES_NOT_EXISTS_ERROR",
+                    "message": "La sala no existe",
+                },
+                status=400,
+            )
+
+        if room.status == "closed":
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "CLOSED_ROOM_ERROR",
+                    "message": "La sala está cerrada",
+                },
+                status=400,
+            )
+
+        return JsonResponse(
+            {
+                "ok": True,
+                "redirect_url": f"rooms/{invitation_code}",
+                "message": f"Te has unido a {room.name}",
+            },
+            status=200,
+        )
+
+
+@login_required
+def room_detail(request: HttpRequest, invitation_code):
+    if request.method == "GET":
+        try:
+            room = Room.objects.get(invitation_code=invitation_code)
+
+        except Room.DoesNotExist:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "DOES_NOT_EXISTS_ERROR",
+                    "message": "La sala no existe",
+                },
+                status=400,
+            )
+
+        if room.status == "closed":
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "CLOSED_ROOM_ERROR",
+                    "message": "La sala está cerrada",
+                },
+                status=404,
+            )
+
+        return render(request, "rooms/detail.html", {"room": room})
