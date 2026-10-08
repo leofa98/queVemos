@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
 from catalog.models import Title
 from library.models import Entry
@@ -147,7 +148,16 @@ def room_new(request: HttpRequest):
 @login_required
 def room_join(request: HttpRequest):
     if request.method == "POST":
-        invitation_code = request.POST.get("invitation_code", "")
+        invitation_code = request.POST.get("invitation_code", "").upper().strip()
+        if not invitation_code:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "CODE_ERROR",
+                    "message": "Introduce un código",
+                },
+                status=400,
+            )
         try:
             room = Room.objects.get(invitation_code=invitation_code)
 
@@ -161,7 +171,7 @@ def room_join(request: HttpRequest):
                 status=400,
             )
 
-        if room.status == "closed":
+        if room.status == Room.RoomStatus.CLOSED:
             return JsonResponse(
                 {
                     "ok": False,
@@ -171,10 +181,17 @@ def room_join(request: HttpRequest):
                 status=400,
             )
 
+        Membership.objects.get_or_create(
+            room=room,
+            user=request.user,
+        )
+
+        url = reverse("room_detail", kwargs={"invitation_code": invitation_code})
+
         return JsonResponse(
             {
                 "ok": True,
-                "redirect_url": f"rooms/{invitation_code}",
+                "redirect_url": url,
                 "message": f"Te has unido a {room.name}",
             },
             status=200,

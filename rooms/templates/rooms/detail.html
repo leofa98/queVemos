@@ -12,8 +12,46 @@
 
 {% block body %}
 <div class="room-detail d-flex flex-column flex-grow-1" >
-    <div class="d-flex">
-        <a href=""></a>
+
+    <div class="mb-3">
+        <a class="text-decoration-none" href="{% url "rooms" %}"><i class="bi bi-arrow-left me-2"></i> Mis salas</a>
+    </div>
+    <div data-room-id="{{ room.id }}" class="mx-0 room-card row border border-secondary p-4 mb-3 rounded-2 align-items-center">
+        <div class="row mx-0 p-0">
+            <div class="col-sm mb-4 mb-sm-0 d-flex justify-content-center flex-column align-items-start">
+                <div>
+                    <h5 class="mb-4">      
+                        <b>
+                            {{ room.name }}
+                        </b>
+                    </h5>
+                    <div>
+                        <div type="" class="fw-semibold px-2 me-2 py-1 d-inline-block w-auto text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">
+                            {{ room.get_status_display }}
+                        </div>
+                        <span class="text-secondary">
+                            <b>Anfitrión: </b> {{ room.host.username }}
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-sm d-sm-flex justify-content-center justify-content-sm-end">
+                <div class="border-2 border-secondary-subtle border-dashed gap-4 px-4 py-2 rounded-2 d-flex justify-content-around justify-content-sm-center align-items-center">
+                    <div>
+                        <p class="m-0">
+                            <small class="text-secondary">CÓDIGO</small>
+                        </p>
+                        <p class="m-0 fw-bold fs-4 font-monospace text-uppercase text-primary text-center" id="invitation-code">
+                            {{ room.invitation_code }}
+                        </p>
+                    </div>
+                    <button type="button" id="copy-code" class="btn d-sm-inline-block btn-outline-primary">
+                        Copiar
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

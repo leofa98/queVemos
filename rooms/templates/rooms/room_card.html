@@ -23,14 +23,12 @@
     </div>
     <div class="col text-end justify-content-end align-content-center d-flex gap-2">
 
-
-        <p>{{ room.invitation_code }}</p>
         {% if room.status == "closed" %}
             <a data-room-id="{{ room.id }}" type="button" class="btn btn-outline-secondary room-card-edit">
                 Ver
             </a>
         {% else %}
-             <a data-room-id="{{ room.id }}" type="button" class="btn  btn-primary  room-card-edit">
+             <a data-room-id="{{ room.id }}" href="{% url "room_detail" room.invitation_code %}" type="button" class="btn  btn-primary  room-card-edit">
                 Ir
             </a>
         {% endif %}

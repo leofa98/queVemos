@@ -75,8 +75,7 @@ d.addEventListener("DOMContentLoaded", () => {
     let code = codeInput.value.trim().toUpperCase();
     let response = await joinRoom(code);
     if (response) {
-      window.location.replace(`${response.redirect_url}`);
-      showToast("success", response.message);
+      window.location.href = response.redirect_url;
     }
   });
 });
