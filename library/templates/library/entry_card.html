@@ -1,5 +1,5 @@
 
-<div data-entryId="{{ entry.id }}" class="mx-0 entry-card row border border-secondary p-4 mb-3 rounded-2 align-items-center">
+<div data-entry-id="{{ entry.id }}" class="mx-0 entry-card row border border-secondary p-4 mb-3 rounded-2 align-items-center">
     <div class="col-md">
         <h5 class="text-primary">
             <b>{{ entry.title.name }}</b>
@@ -26,10 +26,10 @@
             </div>
         {% endif %}
 
-        <button data-entryId="{{ entry.id }}" type="button" class="btn btn-sm btn-outline-primary entry-card-edit">
+        <button data-entry-id="{{ entry.id }}" type="button" class="btn btn-sm btn-outline-primary entry-card-edit">
             <i class="bi bi-pencil"></i>
         </button>
-        <button type="submit" data-entryId="{{ entry.id }}" class="btn btn-sm btn-outline-danger entry-card-delete">
+        <button type="submit" data-entry-id="{{ entry.id }}" class="btn btn-sm btn-outline-danger entry-card-delete">
             <i class="bi bi-x"></i>
         </button>
 

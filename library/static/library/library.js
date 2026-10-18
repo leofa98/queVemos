@@ -113,7 +113,7 @@ d.addEventListener("DOMContentLoaded", function () {
     }
 
     if (e.target.closest(".entry-card-edit")) {
-      let entryId = e.target.closest(".entry-card-edit").dataset.entryid;
+      let entryId = e.target.closest(".entry-card-edit").dataset.entryId;
       let entryData = await getEntry(entryId);
 
       editTitleSelect.value = entryData.title;

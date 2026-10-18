@@ -1,0 +1,9 @@
+<div class="mb-4">
+    {% for candidate in candidates %}
+        {% include "rooms/candidate_card.html" with candidate=candidate %}       
+    {% empty %}
+        <div class="alert alert-primary" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>

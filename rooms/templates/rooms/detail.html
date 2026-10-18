@@ -4,6 +4,7 @@
 
 
 {% block extra_js %}
+        <script defer src="{% static "rooms/room_detail.js" %}"></script>
 {% endblock %}
 
 {% block title %}{{ room.name }}{% endblock %}
@@ -11,14 +12,13 @@
 
 
 {% block body %}
-<div class="room-detail d-flex flex-column flex-grow-1" >
-
-    <div class="mb-3">
+<div data-room-code="{{ room.invitation_code }}" class="room-detail d-flex flex-column flex-grow-1" >
+    <div class="mb-4">
         <a class="text-decoration-none" href="{% url "rooms" %}"><i class="bi bi-arrow-left me-2"></i> Mis salas</a>
     </div>
-    <div data-room-id="{{ room.id }}" class="mx-0 room-card row border border-secondary p-4 mb-3 rounded-2 align-items-center">
+    <div class="mx-0 room-card row border border-secondary p-3 p-sm-4 mb-4 rounded-2 align-items-center">
         <div class="row mx-0 p-0">
-            <div class="col-sm mb-4 mb-sm-0 d-flex justify-content-center flex-column align-items-start">
+            <div class="mx-0 p-0 col-sm mb-4 mb-sm-0 d-flex justify-content-center flex-column align-items-start">
                 <div>
                     <h5 class="mb-4">      
                         <b>
@@ -26,7 +26,7 @@
                         </b>
                     </h5>
                     <div>
-                        <div type="" class="fw-semibold px-2 me-2 py-1 d-inline-block w-auto text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">
+                        <div type="" class="fw-semibold px-2 me-2 py-1 d-inline-block w-auto  border {% if room.status != "closed" %} bg-success-subtle text-success-emphasis border-success-subtle {% else %} bg-secondary-subtle text-secondary-emphasis border-secondary-subtle {% endif %} rounded-2">
                             {{ room.get_status_display }}
                         </div>
                         <span class="text-secondary">
@@ -36,8 +36,8 @@
                 </div>
                 
             </div>
-            <div class="col-sm d-sm-flex justify-content-center justify-content-sm-end">
-                <div class="border-2 border-secondary-subtle border-dashed gap-4 px-4 py-2 rounded-2 d-flex justify-content-around justify-content-sm-center align-items-center">
+            <div class="col-sm p-0 d-sm-flex justify-content-center justify-content-sm-end">
+                <div class="border-2 border-secondary-subtle border-dashed gap-4 px-4 py-2 rounded-2 d-flex justify-content-between justify-content-sm-center align-items-center">
                     <div>
                         <p class="m-0">
                             <small class="text-secondary">CÓDIGO</small>
@@ -46,13 +46,97 @@
                             {{ room.invitation_code }}
                         </p>
                     </div>
-                    <button type="button" id="copy-code" class="btn d-sm-inline-block btn-outline-primary">
+                    <button type="button" id="copy-code" class="btn btn-sm d-sm-inline-block btn-outline-primary">
                         Copiar
                     </button>
                 </div>
             </div>
         </div>
+
     </div>
+    <div class="mb-4">
+        <h6 class="text-secondary">MIEMBROS</h6>
+        <div class="row mx-0">
+            <div class="col-sm p-0 d-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
+                {% for membership in room.memberships.all %}
+                    <h5 class="mb-0"><span class="badge bg-primary-subtle text-primary">{{ membership.user }} {% if membership.user == room.host %}
+                        <i class="bi bi-star-fill"></i>
+                        {% endif %} </span>
+                    
+                    </h5>
+                {% endfor %}
+            </div>
+            {% if room.host != request.user %}
+                <div class="col-sm p-0 d-flex justify-content-sm-end align-items-center">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#exit-modal" class="text-danger btn btn-link">Salir de la sala</button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if room.status != "closed" %}
+        <div class="mb-4">
+            <div class="row mx-0 gap-sm-3 d-sm-flex">
+                <div class="col-6 pe-1 pe-sm-0 col-sm-auto p-0">
+                    <button class="w-100 btn btn-primary" type="">Sugerir títulos</button>
+                </div>
+                <div class="col-6 ps-1 ps-sm-0 col-sm-auto p-0">
+                    <button data-bs-target="#proposeTitleModal" data-bs-toggle="modal" class="w-100 btn btn-outline-primary" type="">+ Proponer</button>
+                </div>   
+            </div>
+        </div>
+    {% endif %}
+    <div class="mb-4">
+        <h6 class="text-secondary">CANDIDATOS</h6>
+        <div id="candidate-list">
+              {% include "rooms/candidate_list.html" with message=message candidates=candidates %} 
+        </div>
+
+        <div id="spinner" class="d-flex flex-column flex-grow-1 justify-content-center align-items-center mb-5 d-none">
+            <div class="spinner-grow text-primary" role="status">
+            </div>
+            </div>
+        </div>
 </div>
 
+<div class="modal fade" id="proposeTitleModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5 text-primary" id="exampleModalToggleLabel">Proponer título</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+
+        <select class="form-select" id="propose-title-select">
+            <option value="" disabled selected>Selecciona un título</option>
+            {% for title in titles %}
+                <option value="{{ title.id }}">{{ title }}</option>
+            {% endfor %}
+        </select>
+    
+      </div>
+      <div class="modal-footer d-flex justify-content-center align-items-center">
+        <button id="propose-title-btn" type="button" class="btn btn-primary">Proponer</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="exit-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                ¿Seguro que quieres salir de la sala?
+            </div>
+            <div class="modal-footer d-flex align-content-center justify-content-center">
+                <button data-room-code="{{ room.invitation_code }}"  type="button" id="exit-confirm" class="btn btn-primary">Sí</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

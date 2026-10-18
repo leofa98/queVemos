@@ -22,7 +22,7 @@
         {% endif %}
     </div>
     <div class="col text-end justify-content-end align-content-center d-flex gap-2">
-
+        {{ room.invitation_code }}
         {% if room.status == "closed" %}
             <a data-room-id="{{ room.id }}" type="button" class="btn btn-outline-secondary room-card-edit">
                 Ver

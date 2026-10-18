@@ -1,0 +1,35 @@
+<div data-room-id="{{ candidate.id }}" class="mx-0 entry-card d-flex justify-content-between align-items-center border border-secondary p-4 mb-3 rounded-2 align-items-center">
+    <div>
+        <div class="d-flex justify-content-start align-items-md-center gap-1 gap-md-3 flex-column flex-md-row mb-1">
+            <h5 class="m-0 text-primary">
+                <b>{{ candidate.title.name }}</b>
+            </h5>
+            <small class="text-secondary">
+                {{ candidate.title.get_media_type_display }} · {{ candidate.title.year }}
+            </small>
+        </div>
+        <small class="m-0 text-secondary">{{ candidate.reason }} gdg</small>
+    </div>
+
+    <div class="d-flex justify-content-end align-items-md-center flex-column">
+        <div class="mb-4 w-100 text-end">
+            <small class="text-secondary">
+                {{ candidate.get_origin_display }}
+            </small>
+
+        </div>
+
+
+        <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-success" type="button">
+                <i class="bi bi-hand-thumbs-up"></i>
+                {{ candidate.up_count }}
+            </button>
+            <button class="btn btn-sm btn-outline-danger"  type="button">
+                <i class="bi bi-hand-thumbs-down"></i>
+                {{ candidate.down_count }}
+            </button> 
+        </div>
+    </div>
+
+</div>
