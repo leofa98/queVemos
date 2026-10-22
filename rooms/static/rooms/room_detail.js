@@ -12,6 +12,7 @@ d.addEventListener("DOMContentLoaded", () => {
   const proposeTitleModal = new bootstrap.Modal(proposeTitleElement);
   const proposeTitleSelect = d.getElementById("propose-title-select");
   const invitationCode = d.querySelector(".room-detail").dataset.roomCode;
+  const voteBtns = d.querySelectorAll(".vote-btn");
   const spinner = d.getElementById("spinner");
   const debouncedList = debounce(async () => {
     try {
@@ -31,7 +32,17 @@ d.addEventListener("DOMContentLoaded", () => {
       copyCodeBtn.textContent = "Copiar";
     }, 3000);
   });
-
+  candidateList.addEventListener("click", async (e) => {
+    if (e.target.closest(".vote-btn")) {
+      let position = e.target.closest(".vote-btn").dataset.votePosition;
+      let candidateId = e.target.closest(".vote-btn").dataset.candidateId;
+      await voteCandidate(invitationCode, candidateId, position);
+      let candidates = await candidateListFetch(invitationCode);
+      if (candidates) {
+        candidateList.innerHTML = candidates;
+      }
+    }
+  });
   exitConfirm.addEventListener("click", async (e) => {
     let roomCode = e.target.dataset.roomCode;
     let response = await roomExit(roomCode);
@@ -82,6 +93,23 @@ async function proposeTitle(title_id, invitation_code) {
       title_id,
     }),
   });
+  return data;
+}
+
+async function voteCandidate(invitation_code, candidate_id, position) {
+  let data = await apiFetch(
+    `/rooms/${invitation_code}/candidates/${candidate_id}/vote`,
+    {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrfToken,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        position,
+      }),
+    },
+  );
   return data;
 }
 

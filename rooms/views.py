@@ -5,7 +5,7 @@ from datetime import timezone
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import IntegrityError, transaction
-from django.db.models import Count, Q
+from django.db.models import Count, Exists, OuterRef, Q
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -209,6 +209,20 @@ def room_detail(request: HttpRequest, invitation_code):
         candidates = room.candidates.annotate(
             up_count=Count("votes", filter=Q(votes__position=Vote.VotePosition.UP)),
             down_count=Count("votes", filter=Q(votes__position=Vote.VotePosition.DOWN)),
+            voted_up=Exists(
+                Vote.objects.filter(
+                    candidate=OuterRef("pk"),
+                    user=request.user,
+                    position=Vote.VotePosition.UP,
+                )
+            ),
+            voted_down=Exists(
+                Vote.objects.filter(
+                    candidate=OuterRef("pk"),
+                    user=request.user,
+                    position=Vote.VotePosition.DOWN,
+                )
+            ),
         )
         try:
             membership = Membership.objects.get(room=room, user=request.user)
@@ -281,10 +295,25 @@ def candidate_list(request: HttpRequest, invitation_code):
                 },
                 status=404,
             )
-
-        return render(
-            request, "rooms/candidate_list.html", {"candidates": room.candidates.all()}
+        candidates = room.candidates.annotate(
+            up_count=Count("votes", filter=Q(votes__position=Vote.VotePosition.UP)),
+            down_count=Count("votes", filter=Q(votes__position=Vote.VotePosition.DOWN)),
+            voted_up=Exists(
+                Vote.objects.filter(
+                    candidate=OuterRef("pk"),
+                    user=request.user,
+                    position=Vote.VotePosition.UP,
+                )
+            ),
+            voted_down=Exists(
+                Vote.objects.filter(
+                    candidate=OuterRef("pk"),
+                    user=request.user,
+                    position=Vote.VotePosition.DOWN,
+                )
+            ),
         )
+        return render(request, "rooms/candidate_list.html", {"candidates": candidates})
 
 
 @login_required
@@ -346,7 +375,7 @@ def propose_title(request: HttpRequest, invitation_code):
 
 
 @login_required
-def vote(request: HttpRequest, candidate_id):
+def vote(request: HttpRequest, candidate_id, invitation_code):
     if request.method == "POST":
         position = request.POST.get("position", "")
         if not position:

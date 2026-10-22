@@ -11,7 +11,7 @@
         <small class="m-0 text-secondary">{{ candidate.reason }} gdg</small>
     </div>
 
-    <div class="d-flex justify-content-end align-items-md-center flex-column">
+    <div class="d-flex w-50 justify-content-end align-items-end flex-column">
         <div class="mb-4 w-100 text-end">
             <small class="text-secondary">
                 {{ candidate.get_origin_display }}
@@ -19,13 +19,13 @@
 
         </div>
 
-
-        <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline-success" type="button">
+        
+        <div class="d-flex gap-1">
+            <button data-vote-position="up" data-candidate-id="{{ candidate.id }}" class="btn btn-sm vote-btn {% if candidate.voted_up %} btn-success {% else %} btn-outline-success {% endif %}" type="button">
                 <i class="bi bi-hand-thumbs-up"></i>
                 {{ candidate.up_count }}
             </button>
-            <button class="btn btn-sm btn-outline-danger"  type="button">
+            <button data-vote-position="down" data-candidate-id="{{ candidate.id }}"  class="btn btn-sm vote-btn {% if candidate.voted_down %} btn-danger {% else %} btn-outline-danger {% endif %}"  type="button">
                 <i class="bi bi-hand-thumbs-down"></i>
                 {{ candidate.down_count }}
             </button> 
