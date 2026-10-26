@@ -105,7 +105,9 @@ def room_list(request: HttpRequest):
 def room_new(request: HttpRequest):
     if request.method == "POST":
         name = request.POST.get("name", "")
-        allow_seen = request.POST.get("allow_seen", False)
+        allow_seen = request.POST.get("allow_seen", "")
+
+        allow_seen = allow_seen == "true"
 
         if not name:
             return JsonResponse(
@@ -231,7 +233,7 @@ def room_detail(request: HttpRequest, invitation_code):
 
         message = ""
 
-        if room.candidates.count():
+        if not room.candidates.count():
             message = "Todavía no hay candidatos"
 
         return render(
@@ -295,6 +297,19 @@ def candidate_list(request: HttpRequest, invitation_code):
                 },
                 status=404,
             )
+
+        try:
+            membership = Membership.objects.get(room=room, user=request.user)
+        except Membership.DoesNotExist:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "DOES_NOT_EXISTS_ERROR",
+                    "message": "No eres miembro de esta sala",
+                },
+                status=404,
+            )
+
         candidates = room.candidates.annotate(
             up_count=Count("votes", filter=Q(votes__position=Vote.VotePosition.UP)),
             down_count=Count("votes", filter=Q(votes__position=Vote.VotePosition.DOWN)),
