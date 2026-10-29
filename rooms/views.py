@@ -5,7 +5,7 @@ from datetime import timezone
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import IntegrityError, transaction
-from django.db.models import Count, Exists, OuterRef, Q
+from django.db.models import Count, Exists, F, OuterRef, Q
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -225,7 +225,11 @@ def room_detail(request: HttpRequest, invitation_code):
                     position=Vote.VotePosition.DOWN,
                 )
             ),
+        ).annotate(
+            net_votes=F("up_count") - F("down_count"),
         )
+
+        favourite = candidates.order_by("-net_votes").values().first()
         try:
             membership = Membership.objects.get(room=room, user=request.user)
         except Membership.DoesNotExist:
@@ -243,6 +247,7 @@ def room_detail(request: HttpRequest, invitation_code):
                 "message": message,
                 "room": room,
                 "titles": titles,
+                "favourite": favourite,
                 "candidates": candidates,
             },
         )
@@ -327,7 +332,10 @@ def candidate_list(request: HttpRequest, invitation_code):
                     position=Vote.VotePosition.DOWN,
                 )
             ),
+        ).annotate(
+            net_votes=F("up_count") - F("down_count"),
         )
+
         return render(request, "rooms/candidate_list.html", {"candidates": candidates})
 
 

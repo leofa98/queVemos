@@ -52,7 +52,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <div class="mb-4">
         <h6 class="text-secondary">MIEMBROS</h6>
@@ -86,7 +85,7 @@
             </div>
         </div>
     {% endif %}
-    <div class="mb-4">
+    <div>
         <h6 class="text-secondary">CANDIDATOS</h6>
         <div id="candidate-list">
               {% include "rooms/candidate_list.html" with message=message candidates=candidates %} 
@@ -94,10 +93,17 @@
 
         <div id="spinner" class="d-flex flex-column flex-grow-1 justify-content-center align-items-center mb-5 d-none">
             <div class="spinner-grow text-primary" role="status">
-            </div>
+        </div>
             </div>
         </div>
-</div>
+    </div>
+ 
+    {% if room.host == request.user %}
+        <hr  class="mb-4">
+        <div class="text-end mb-4">
+            <button type="button" data-bs-target="#closeRoomModal" data-bs-toggle="modal" class="btn btn-primary">Cerrar y elegir</button>
+        </div>
+    {% endif %}
 
 <div class="modal fade" id="proposeTitleModal">
   <div class="modal-dialog modal-dialog-centered">
@@ -109,6 +115,7 @@
         <div class="modal-body">
 
         <select class="form-select" id="propose-title-select">
+
             <option value="" disabled selected>Selecciona un título</option>
             {% for title in titles %}
                 <option value="{{ title.id }}">{{ title }}</option>
@@ -118,6 +125,32 @@
       </div>
       <div class="modal-footer d-flex justify-content-center align-items-center">
         <button id="propose-title-btn" type="button" class="btn btn-primary">Proponer</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="closeRoomModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5 text-primary" id="closeRoomModalToggleLabel">Elegir y cerrar sala</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+
+        <select class="form-select" id="candidate-select">
+            <option value="" disabled selected>Selecciona un candidato</option>
+            {% for candidate in candidates %}
+                <option value="{{ candidate.id }}">{{ candidate.title }}</option>
+            {% endfor %}
+        </select>
+    
+      </div>
+      <div class="modal-footer d-flex justify-content-center align-items-center">
+        <button id="close-room-btn" type="button" class="btn btn-primary">Aceptar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
       </div>
     </div>
