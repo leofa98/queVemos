@@ -1,9 +1,9 @@
 
-<div data-room-id="{{ room.id }}" class="mx-0 room-card row border {% if room.status == "closed" %}  bg-secondary-subtle {% else %} border-secondary  {% endif %}  p-4 mb-3 rounded-2 align-items-center">
+<div data-room-id="{{ room.id }}" class="mx-0 room-card row border {% if room.status == "closed" %}  bg-secondary-subtle {% else %} border-secondary  {% endif %}  p-3 p-sm-4 mb-3 rounded-2 align-items-center">
     <div class="col">
         <div class="d-flex gap-3 align-items-center mb-2">
             {% if room.status == "closed" %}
-                <h5 class="text-primary m-0">
+                <h5 class="text-primary  text-secondary m-0">
                     <b>{{ room.winner.title.name }}</b>
                 </h5>
             {% else %}

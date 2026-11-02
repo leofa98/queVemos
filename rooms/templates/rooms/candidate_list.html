@@ -1,9 +1,17 @@
 <div class="mb-4">
     {% for candidate in candidates %}
-        {% include "rooms/candidate_card.html" with candidate=candidate %}       
+        {% include "rooms/candidate_card.html" with candidate=candidate favourite=favourite %}       
     {% empty %}
         <div class="alert alert-primary" role="alert">
             {{ message }}
         </div>
     {% endfor %}
 </div>
+
+
+{% if candidates.all.count != 0 and room.host == request.user and room.status == "open" %}
+    <hr  class="mb-4">
+    <div class="text-end mb-4">
+        <button type="button" id="close-room-btn" class="btn btn-primary">Cerrar y elegir</button>
+    </div>
+{% endif %}

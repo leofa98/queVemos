@@ -1,6 +1,5 @@
 import random
 import string
-from datetime import timezone
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -9,6 +8,7 @@ from django.db.models import Count, Exists, F, OuterRef, Q
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils import timezone
 
 from catalog.models import Title
 from library.models import Entry
@@ -229,7 +229,15 @@ def room_detail(request: HttpRequest, invitation_code):
             net_votes=F("up_count") - F("down_count"),
         )
 
+        winner = None
+        if room.status == room.RoomStatus.CLOSED:
+            winner = candidates.filter(pk=room.winner_id).first()
+
         favourite = candidates.order_by("-net_votes").values().first()
+
+        if favourite:
+            favourite = favourite if favourite["net_votes"] > 0 else None
+
         try:
             membership = Membership.objects.get(room=room, user=request.user)
         except Membership.DoesNotExist:
@@ -247,6 +255,7 @@ def room_detail(request: HttpRequest, invitation_code):
                 "message": message,
                 "room": room,
                 "titles": titles,
+                "winner": winner,
                 "favourite": favourite,
                 "candidates": candidates,
             },
@@ -336,7 +345,16 @@ def candidate_list(request: HttpRequest, invitation_code):
             net_votes=F("up_count") - F("down_count"),
         )
 
-        return render(request, "rooms/candidate_list.html", {"candidates": candidates})
+        favourite = candidates.order_by("-net_votes").values().first()
+
+        if favourite:
+            favourite = favourite if favourite["net_votes"] > 0 else None
+
+        return render(
+            request,
+            "rooms/candidate_list.html",
+            {"candidates": candidates, "favourite": favourite, "room": room},
+        )
 
 
 @login_required

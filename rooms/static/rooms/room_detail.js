@@ -8,23 +8,16 @@ d.addEventListener("DOMContentLoaded", () => {
   const exitConfirm = d.getElementById("exit-confirm");
   const candidateList = d.getElementById("candidate-list");
   const proposeTitleElement = d.getElementById("proposeTitleModal");
+  const closeRoomModalElement = d.getElementById("closeRoomModal");
   const proposeTitlebtn = d.getElementById("propose-title-btn");
   const proposeTitleModal = new bootstrap.Modal(proposeTitleElement);
+  const closeRoomModal = new bootstrap.Modal(closeRoomModalElement);
   const proposeTitleSelect = d.getElementById("propose-title-select");
   const invitationCode = d.querySelector(".room-detail").dataset.roomCode;
-  const voteBtns = d.querySelectorAll(".vote-btn");
-  const spinner = d.getElementById("spinner");
-  const debouncedList = debounce(async () => {
-    try {
-      let candidates = await candidateListFetch(invitationCode);
-      if (candidates) {
-        candidateList.innerHTML = candidates;
-      }
-    } finally {
-      spinner.classList.add("d-none");
-      candidateList.classList.remove("d-none");
-    }
-  }, 1000);
+  const closeRoomBtn = d.getElementById("close-room-btn");
+  const candidateSelect = d.getElementById("candidate-select");
+  const confirmCloseRoomBtn = d.getElementById("confirm-close-room-btn");
+
   copyCodeBtn.addEventListener("click", async () => {
     await navigator.clipboard.writeText(invitationCodeField.textContent.trim());
     copyCodeBtn.textContent = "Copiado ✔";
@@ -34,13 +27,12 @@ d.addEventListener("DOMContentLoaded", () => {
   });
   candidateList.addEventListener("click", async (e) => {
     if (e.target.closest(".vote-btn")) {
-      let position = e.target.closest(".vote-btn").dataset.votePosition;
-      let candidateId = e.target.closest(".vote-btn").dataset.candidateId;
+      let voteBtn = e.target.closest(".vote-btn");
+      voteBtn.disabled = true;
+      let position = voteBtn.dataset.votePosition;
+      let candidateId = voteBtn.dataset.candidateId;
       await voteCandidate(invitationCode, candidateId, position);
-      let candidates = await candidateListFetch(invitationCode);
-      if (candidates) {
-        candidateList.innerHTML = candidates;
-      }
+      await loadCandidates();
     }
   });
   exitConfirm.addEventListener("click", async (e) => {
@@ -58,13 +50,36 @@ d.addEventListener("DOMContentLoaded", () => {
     let response = await proposeTitle(titleId, invitationCode);
     if (response) {
       showToast("success", response.message);
-      spinner.classList.remove("d-none");
-      candidateList.classList.add("d-none");
-      debouncedList();
+      loadCandidates();
       proposeTitleModal.hide();
       proposeTitleSelect.value = "";
     }
   });
+  if (closeRoomBtn) {
+    closeRoomBtn.addEventListener("click", async () => {
+      closeRoomModal.show();
+      let dataLeader = d.querySelector("[data-leader]");
+      if (dataLeader) {
+        candidateSelect.value = dataLeader.dataset.candidateId;
+      }
+    });
+  }
+
+  confirmCloseRoomBtn.addEventListener("click", async () => {
+    let candidateId = candidateSelect.value;
+
+    let closed = await closeRoom(invitationCode, candidateId);
+    if (closed) {
+      location.reload();
+    }
+  });
+
+  async function loadCandidates() {
+    let candidates = await apiFetchText(`/rooms/${invitationCode}/candidates`);
+    if (candidates) {
+      candidateList.innerHTML = candidates;
+    }
+  }
 });
 
 async function roomExit(invitation_code) {
@@ -113,9 +128,17 @@ async function voteCandidate(invitation_code, candidate_id, position) {
   return data;
 }
 
-async function candidateListFetch(invitation_code) {
-  let data = await apiFetchText(`/rooms/${invitation_code}/candidates`, {
-    method: "GET",
+async function closeRoom(invitationCode, candidateId) {
+  let data = await apiFetch(`/rooms/close`, {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": csrfToken,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      invitation_code: invitationCode,
+      candidate_id: candidateId,
+    }),
   });
 
   return data;

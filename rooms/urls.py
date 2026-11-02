@@ -9,6 +9,11 @@ urlpatterns = [
     path("rooms/list", views.room_list, name="room_list"),
     path("rooms/join", views.room_join, name="room_join"),
     path("rooms/exit", views.room_exit, name="room_exit"),
+    path(
+        "rooms/close",
+        views.close_room,
+        name="close",
+    ),
     path("rooms/<str:invitation_code>", views.room_detail, name="room_detail"),
     path(
         "rooms/<str:invitation_code>/candidates/new",
