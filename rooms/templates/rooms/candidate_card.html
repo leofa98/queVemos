@@ -24,11 +24,11 @@
             </small>
         </div>
         <div class="d-flex gap-1">
-            <button data-vote-position="up"  data-candidate-id="{{ candidate.id }}" class="btn btn-sm vote-btn {% if candidate.voted_up %} btn-success {% else %} btn-outline-success {% endif %}" type="button">
+            <button data-vote-position="up"  data-candidate-id="{{ candidate.id }}" {% if room.status == "closed" %} disabled {% endif %} class="btn btn-sm vote-btn {% if candidate.voted_up %} btn-success {% else %} btn-outline-success {% endif %}" type="button">
                 <i class="bi bi-hand-thumbs-up"></i>
                 {{ candidate.up_count }}
             </button>
-            <button data-vote-position="down" data-candidate-id="{{ candidate.id }}"  class="btn btn-sm vote-btn {% if candidate.voted_down %} btn-danger {% else %} btn-outline-danger {% endif %}"  type="button">
+            <button data-vote-position="down" data-candidate-id="{{ candidate.id }}"  {% if room.status == "closed" %} disabled {% endif %} class="btn btn-sm vote-btn {% if candidate.voted_down %} btn-danger {% else %} btn-outline-danger {% endif %}"  type="button">
                 <i class="bi bi-hand-thumbs-down"></i>
                 {{ candidate.down_count }}
             </button> 

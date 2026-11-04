@@ -8,16 +8,10 @@ d.addEventListener("DOMContentLoaded", () => {
   const exitConfirm = d.getElementById("exit-confirm");
   const candidateList = d.getElementById("candidate-list");
   const proposeTitleElement = d.getElementById("proposeTitleModal");
-  const closeRoomModalElement = d.getElementById("closeRoomModal");
   const proposeTitlebtn = d.getElementById("propose-title-btn");
   const proposeTitleModal = new bootstrap.Modal(proposeTitleElement);
-  const closeRoomModal = new bootstrap.Modal(closeRoomModalElement);
   const proposeTitleSelect = d.getElementById("propose-title-select");
   const invitationCode = d.querySelector(".room-detail").dataset.roomCode;
-  const closeRoomBtn = d.getElementById("close-room-btn");
-  const candidateSelect = d.getElementById("candidate-select");
-  const confirmCloseRoomBtn = d.getElementById("confirm-close-room-btn");
-
   copyCodeBtn.addEventListener("click", async () => {
     await navigator.clipboard.writeText(invitationCodeField.textContent.trim());
     copyCodeBtn.textContent = "Copiado ✔";
@@ -33,6 +27,27 @@ d.addEventListener("DOMContentLoaded", () => {
       let candidateId = voteBtn.dataset.candidateId;
       await voteCandidate(invitationCode, candidateId, position);
       await loadCandidates();
+    }
+
+    if (e.target.closest("#close-room-btn")) {
+      let closeRoomModalElement = d.getElementById("closeRoomModal");
+      let closeRoomModal = bootstrap.Modal.getOrCreateInstance(
+        closeRoomModalElement,
+      );
+      closeRoomModal.show();
+      let dataLeader = d.querySelector("[data-leader]");
+      if (dataLeader) {
+        let candidateSelect = d.getElementById("candidate-select");
+        candidateSelect.value = dataLeader.dataset.candidateId;
+      }
+    }
+    if (e.target.closest("#confirm-close-room-btn")) {
+      let candidateSelect = d.getElementById("candidate-select");
+      let candidateId = candidateSelect.value;
+      let closed = await closeRoom(invitationCode, candidateId);
+      if (closed) {
+        location.reload();
+      }
     }
   });
   exitConfirm.addEventListener("click", async (e) => {
@@ -53,24 +68,6 @@ d.addEventListener("DOMContentLoaded", () => {
       loadCandidates();
       proposeTitleModal.hide();
       proposeTitleSelect.value = "";
-    }
-  });
-  if (closeRoomBtn) {
-    closeRoomBtn.addEventListener("click", async () => {
-      closeRoomModal.show();
-      let dataLeader = d.querySelector("[data-leader]");
-      if (dataLeader) {
-        candidateSelect.value = dataLeader.dataset.candidateId;
-      }
-    });
-  }
-
-  confirmCloseRoomBtn.addEventListener("click", async () => {
-    let candidateId = candidateSelect.value;
-
-    let closed = await closeRoom(invitationCode, candidateId);
-    if (closed) {
-      location.reload();
     }
   });
 

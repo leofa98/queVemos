@@ -30,4 +30,9 @@ urlpatterns = [
         views.vote,
         name="vote",
     ),
+    path(
+        "rooms/<str:invitation_code>/candidates/suggest",
+        views.suggest_candidates,
+        name="suggest",
+    ),
 ]

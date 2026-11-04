@@ -350,10 +350,20 @@ def candidate_list(request: HttpRequest, invitation_code):
         if favourite:
             favourite = favourite if favourite["net_votes"] > 0 else None
 
+        message = ""
+
+        if not room.candidates.count():
+            message = "Todavía no hay candidatos"
+
         return render(
             request,
             "rooms/candidate_list.html",
-            {"candidates": candidates, "favourite": favourite, "room": room},
+            {
+                "candidates": candidates,
+                "favourite": favourite,
+                "room": room,
+                "message": message,
+            },
         )
 
 
@@ -582,3 +592,32 @@ def close_room(request: HttpRequest):
             },
             status=200,
         )
+
+
+@login_required
+def suggest_candidates(request: HttpRequest, invitation_code):
+
+    if request.method == "POST":
+        try:
+            room = Room.objects.get(invitation_code=invitation_code)
+        except Room.DoesNotExist:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "DOES_NOT_EXISTS_ERROR",
+                    "message": "La sala no existe",
+                },
+                status=404,
+            )
+
+        try:
+            membership = Membership.objects.get(room=room, user=request.user)
+        except Membership.DoesNotExist:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "DOES_NOT_EXISTS_ERROR",
+                    "message": "No eres miembro de esta sala",
+                },
+                status=404,
+            )

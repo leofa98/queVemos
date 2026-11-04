@@ -2,14 +2,11 @@
 
 {% load static %}
 
-
 {% block extra_js %}
         <script defer src="{% static "rooms/room_detail.js" %}"></script>
 {% endblock %}
 
 {% block title %}{{ room.name }}{% endblock %}
-
-
 
 {% block body %}
 <div data-room-code="{{ room.invitation_code }}" class="room-detail d-flex flex-column flex-grow-1">
@@ -130,32 +127,6 @@
       </div>
       <div class="modal-footer d-flex justify-content-center align-items-center">
         <button id="propose-title-btn" type="button" class="btn btn-primary">Proponer</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="modal fade" id="closeRoomModal">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-5 text-primary" id="closeRoomModalToggleLabel">Elegir y cerrar sala</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-
-        <select class="form-select" id="candidate-select">
-            <option value="" disabled selected>Selecciona un candidato</option>
-            {% for candidate in candidates %}
-                <option value="{{ candidate.id }}">{{ candidate.title }}</option>
-            {% endfor %}
-        </select>
-    
-      </div>
-      <div class="modal-footer d-flex justify-content-center align-items-center">
-        <button id="confirm-close-room-btn" type="button" class="btn btn-primary">Aceptar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
       </div>
     </div>
