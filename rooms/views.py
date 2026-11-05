@@ -610,8 +610,10 @@ def suggest_candidates(request: HttpRequest, invitation_code):
                 status=404,
             )
 
+        if room == Room.RoomStatus.CLOSED:
+            return JsonResponse({"ok": False, "error": "DOES"})
         try:
-            membership = Membership.objects.get(room=room, user=request.user)
+            Membership.objects.get(room=room, user=request.user)
         except Membership.DoesNotExist:
             return JsonResponse(
                 {
@@ -620,4 +622,83 @@ def suggest_candidates(request: HttpRequest, invitation_code):
                     "message": "No eres miembro de esta sala",
                 },
                 status=404,
+            )
+
+        members = room.memberships().values_list("user", flat=True)
+        titles = Title.objects.annotate(
+            pending_count=Count(
+                "entries",
+                filter=Q(
+                    entries__user__in=members, entries__status=Entry.EntryStatus.SEEN
+                ),
+            )
+        ).filter(pending_count__gt=0)
+
+        if not titles.count():
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "NO_PENDING",
+                    "message": "Ninguno tenéis títulos pendientes. Añadid alguno a vuestra biblioteca",
+                },
+                status=409,
+            )
+
+        if not room.allow_seen:
+            seen_ids = Entry.objects.filter(
+                user__in=members, status=Entry.EntryStatus.PENDING
+            ).values_list("title", flat=True)
+
+            titles = titles.exclude(pk__in=seen_ids)
+
+            if not titles.count():
+                return JsonResponse(
+                    {
+                        "ok": False,
+                        "error": "ALL_SEEN",
+                        "message": "Todo lo que tenéis pendiente ya lo ha visto alguien",
+                    },
+                    status=409,
+                )
+        count = 0
+
+        titles = titles.order_by("-pending_count")[:5]
+        for title in titles:
+            reason = ""
+
+            if title.pending_count == members.count():
+                reason = "Lo tenéis pendiente todos"
+            elif title.pending_count == 1:
+                reason = "Lo tiene pendiente un miembro"
+            else:
+                reason = (
+                    f"{title.pending_count} de {members.count()} lo tenéis pendiente"
+                )
+
+            candidate, create = Candidate.objects.get_or_create(
+                title=title,
+                room=room,
+                defaults={
+                    "origin": Candidate.CandidateOrigin.SUGGESTED,
+                    "score": title.pending_count,
+                    "reason": reason,
+                },
+            )
+            if create:
+                count += 1
+        if count > 0:
+            return JsonResponse(
+                {
+                    "ok": True,
+                    "message": f"Se han añadido {count} sugerencias",
+                }
+            )
+        else:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "ALREADY_SUGGESTED",
+                    "message": "Ya están todas las sugerencias posibles en la sala",
+                },
+                status=409,
             )
