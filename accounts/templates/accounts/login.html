@@ -4,32 +4,41 @@
 
 {% block body %}
 <div class="d-flex align-items-center justify-content-center flex-grow-1">
-    <form class="p-4 accounts-form" action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <div class="mb-3">
-            <h4 class="text-primary">Iniciar sesión</h4>
+    <div class="auth row g-0">
+        <div class="col-md-5 auth-side auth-side d-none d-md-flex align-items-end p-3">
+            <div>
+                <div class="logo">Qu<span>é</span>Vemos</div>
+            </div>
         </div>
-        {% if message %}
-        <div class="alert alert-danger" role="alert">
-            {{ message }}
-        </div>
-        {% endif %}
-        <div class="mb-3">
-            <label for="login-user" class="form-label text-secondary">USUARIO</label>
-            <input required type="text" class="form-control" name="login-user" id="login-user">
-        </div>
-        <div class="mb-3">
-            <label for="login-password" class="form-label text-secondary">CONTRASEÑA</label>
-            <input required type="password" class="form-control" name="login-password" id="login-password">
-        </div>
-        <div class="mb-3 text-center">
-            <button type="submit" class="btn btn-primary py-2 px-4 m-auto">Iniciar sesión</button>
-        </div>
-        <div class="text-center">
-            <div class="form-text text-secondary">¿No tienes cuenta? <a class="form-text link-primary" href={% url "register" %}>Regístrate aquí</a> </div>
-        </div>
-    </form>
+        <div class="col-md-7 p-4 d-flex-justify-content-center align-content-center p-sm-5">
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <h4 class="text-primary">Iniciar sesión</h4>
+                </div>
+                {% if message %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+                {% endif %}
+                <div class="mb-4">
+                    <label for="login-user" class="form-label text-secondary">USUARIO</label>
+                    <input required type="text" class="form-control" name="login-user" id="login-user">
+                </div>
+                <div class="mb-5">
+                    <label for="login-password" class="form-label text-secondary">CONTRASEÑA</label>
+                    <input required type="password" class="form-control" name="login-password" id="login-password">
+                </div>
+                <div class="mb-4 text-center">
+                    <button type="submit" class="btn btn-primary py-2 px-4 w-100">Iniciar sesión</button>
+                </div>
+                <div class="text-center">
+                    <div class="form-text text-secondary">¿No tienes cuenta? <a class="form-text link-primary" href={% url "register" %}>Regístrate aquí</a> </div>
+                </div>
+            </form>
 
-</div>
+        </div>
+    </div>
+</div>-
 
 {% endblock %}

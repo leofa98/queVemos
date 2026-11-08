@@ -3,41 +3,49 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-<div class="flex-grow-1 d-flex align-items-center justify-content-center flex-grow-1">
-    <form class="p-4 accounts-form" action="{% url 'register' %}" method="post">
-        {% csrf_token %}
-        <div class="mb-3">
-            <h4 class="text-primary">Crear cuenta</h4>
-        </div>
-        {% if message %}
-            <div class="alert alert-danger" role="alert">
-                {{ message }}
+<div class="d-flex align-items-center justify-content-center flex-grow-1">
+   <div class="auth row g-0">
+        <div class="col-md-5 auth-side auth-side d-none d-md-flex align-items-end p-3">
+                <div>
+                    <div class="logo">Qu<span>é</span>Vemos</div>
+                </div>
             </div>
-        {% endif %}
-        <div class="mb-3">
-            <label for="register-user" class="form-label text-secondary">USUARIO</label>
-            <input required type="text" class="form-control" name="register-user" id="register-user">
-        </div>
-        <div class="mb-3">
-            <label for="register-email" class="form-label text-secondary">EMAIL</label>
-            <input required type="email" class="form-control" id="register-email" name="register-email">
-        </div>
-        <div class="mb-3">
-            <label for="register-password" class="form-label text-secondary">CONTRASEÑA</label>
-            <input required type="password" class="form-control" name="register-password" id="register-password">
-        </div>
-        <div class="mb-3">
-            <label for="repeat-password" class="form-label text-secondary">REPETIR CONTRASEÑA</label>
-            <input required type="password" class="form-control" name="confirm-password" id="confirm-password">
-        </div>
-        <div class="mb-3 text-center">
-            <button required type="submit" class="btn btn-primary py-2 px-4 m-auto">Crear Cuenta</button>
-        </div>
-        <div class="text-center">
-            <div class="form-text text-secondary">¿Ya tienes cuenta? <a class="form-text link-primary" href={% url "login" %}>Entra aquí</a> </div>
-        </div>
-    </form>
-
+            <div class="col-md-7 p-4 d-flex-justify-content-center align-content-center p-sm-5">
+                <form action="{% url 'register' %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <h4 class="text-primary">Crear cuenta</h4>
+                    </div>
+                    {% if message %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                    <div class="mb-3">
+                        <label for="register-user" class="form-label text-secondary">USUARIO</label>
+                        <input required type="text" class="form-control" name="register-user" id="register-user">
+                    </div>
+                    <div class="mb-3">
+                        <label for="register-email" class="form-label text-secondary">EMAIL</label>
+                        <input required type="email" class="form-control" id="register-email" name="register-email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="register-password" class="form-label text-secondary">CONTRASEÑA</label>
+                        <input required type="password" class="form-control" name="register-password" id="register-password">
+                    </div>
+                    <div class="mb-4">
+                        <label for="repeat-password" class="form-label text-secondary">REPETIR CONTRASEÑA</label>
+                        <input required type="password" class="form-control" name="confirm-password" id="confirm-password">
+                    </div>
+                    <div class="mb-3 text-center">
+                        <button required type="submit" class="btn btn-primary w-100 py-2 px-4 m-auto">Crear Cuenta</button>
+                    </div>
+                    <div class="text-center">
+                        <div class="form-text text-secondary">¿Ya tienes cuenta? <a class="form-text link-primary" href={% url "login" %}>Entra aquí</a> </div>
+                    </div>
+                </form>
+            </div>
+    </div>
 </div>
 
 {% endblock %}

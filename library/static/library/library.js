@@ -97,7 +97,7 @@ d.addEventListener("DOMContentLoaded", function () {
 
   entryList.addEventListener("click", async (e) => {
     if (e.target.closest(".entry-card-delete")) {
-      let entryId = e.target.closest(".entry-card-delete").dataset.entryid;
+      let entryId = e.target.closest(".entry-card-delete").dataset.entryId;
       deleteModalElement.dataset.entryid = entryId;
       deleteModal.show();
       d.getElementById("deleteConfirm").onclick = async () => {

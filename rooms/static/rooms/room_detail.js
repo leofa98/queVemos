@@ -12,6 +12,7 @@ d.addEventListener("DOMContentLoaded", () => {
   const proposeTitleModal = new bootstrap.Modal(proposeTitleElement);
   const proposeTitleSelect = d.getElementById("propose-title-select");
   const invitationCode = d.querySelector(".room-detail").dataset.roomCode;
+  const suggestCandidatesBtn = d.getElementById("btn-suggest-candidates");
   copyCodeBtn.addEventListener("click", async () => {
     await navigator.clipboard.writeText(invitationCodeField.textContent.trim());
     copyCodeBtn.textContent = "Copiado ✔";
@@ -68,6 +69,20 @@ d.addEventListener("DOMContentLoaded", () => {
       loadCandidates();
       proposeTitleModal.hide();
       proposeTitleSelect.value = "";
+    }
+  });
+
+  suggestCandidatesBtn.addEventListener("click", async () => {
+    let response;
+    try {
+      suggestCandidatesBtn.disabled = true;
+      response = await suggestCandidates(invitationCode);
+    } finally {
+      if (response) {
+        showToast("success", response.message);
+        loadCandidates();
+      }
+      suggestCandidatesBtn.disabled = false;
     }
   });
 
@@ -135,6 +150,18 @@ async function closeRoom(invitationCode, candidateId) {
     body: new URLSearchParams({
       invitation_code: invitationCode,
       candidate_id: candidateId,
+    }),
+  });
+
+  return data;
+}
+
+async function suggestCandidates(invitationCode) {
+  let data = await apiFetch(`/rooms/${invitationCode}/candidates/suggest`, {
+    method: "POST",
+    headers: { "X-CSRFToken": csrfToken },
+    body: new URLSearchParams({
+      invitation_code: invitationCode,
     }),
   });
 

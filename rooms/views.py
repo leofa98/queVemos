@@ -596,7 +596,6 @@ def close_room(request: HttpRequest):
 
 @login_required
 def suggest_candidates(request: HttpRequest, invitation_code):
-
     if request.method == "POST":
         try:
             room = Room.objects.get(invitation_code=invitation_code)
@@ -610,8 +609,15 @@ def suggest_candidates(request: HttpRequest, invitation_code):
                 status=404,
             )
 
-        if room == Room.RoomStatus.CLOSED:
-            return JsonResponse({"ok": False, "error": "DOES"})
+        if room.status == Room.RoomStatus.CLOSED:
+            return JsonResponse(
+                {
+                    "ok": False,
+                    "error": "CLOSED_ROOM_ERROR",
+                    "message": "La sala está cerrada",
+                },
+                status=400,
+            )
         try:
             Membership.objects.get(room=room, user=request.user)
         except Membership.DoesNotExist:
@@ -624,12 +630,12 @@ def suggest_candidates(request: HttpRequest, invitation_code):
                 status=404,
             )
 
-        members = room.memberships().values_list("user", flat=True)
+        members = room.memberships.values_list("user", flat=True)
         titles = Title.objects.annotate(
             pending_count=Count(
                 "entries",
                 filter=Q(
-                    entries__user__in=members, entries__status=Entry.EntryStatus.SEEN
+                    entries__user__in=members, entries__status=Entry.EntryStatus.PENDING
                 ),
             )
         ).filter(pending_count__gt=0)
@@ -646,7 +652,7 @@ def suggest_candidates(request: HttpRequest, invitation_code):
 
         if not room.allow_seen:
             seen_ids = Entry.objects.filter(
-                user__in=members, status=Entry.EntryStatus.PENDING
+                user__in=members, status=Entry.EntryStatus.SEEN
             ).values_list("title", flat=True)
 
             titles = titles.exclude(pk__in=seen_ids)
@@ -698,7 +704,7 @@ def suggest_candidates(request: HttpRequest, invitation_code):
                 {
                     "ok": False,
                     "error": "ALREADY_SUGGESTED",
-                    "message": "Ya están todas las sugerencias posibles en la sala",
+                    "message": "Ya están todas las sugerencias posibles",
                 },
                 status=409,
             )

@@ -2,22 +2,34 @@
 
 {% block title %}Bienvenida{% endblock %}
 {% block body %}
-<div class="welcome-container px-md-5 flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="mb-5">
-        <h1 class="text-primary text-center">Decidid qué ver sin discutir</h1>
-    </div>
-    <div class="mb-5">
-        <ol class="my-5">
-            <li class="text-dark">Guarda lo que has visto y lo que te apetece</li>
-            <li class="text-dark">Crea una sala y pasa el código a tu grupo</li>
-            <li class="text-dark">La app propone, vosotros votáis</li>
-        </ol>    
-    </div>
-    <div class="mb-5">
-        <div class="d-flex justify-content-center">
-            <a href={% url "login" %} class="btn btn-lg btn-primary">Empezar</a>
-        </div>
-    </div>
+{% block main_class %}{% endblock %}
+
+<div class="container">
 
 </div>
+
+<section class="hero">
+    <div class="container">
+        <div class="welcome-container d-flex flex-column justify-content-around">
+            <div >
+                <h1 class=" text-light display-1 text-center mb-4">¿Qué <span class="fw-bold text-ambar-claro">vemos</span> hoy?</h1>
+                <h4 class="m-0 text-light text-center">Decidid qué ver sin discutir</h4>
+            </div>
+            <div class="ps-4 mx-md-5 ps-0 ps-md-5" >
+                <p class="text-light mb-4 mb-md-4"><span class="fw-bold h5 text-warning">1. </span>Guarda lo que has visto y lo que te apetece</p>
+                <p class="text-light mb-4 mb-md-4"><span class="fw-bold h5 text-warning">2. </span>Crea una sala y pasa el código a tu grupo</p>
+                <p class="text-light"><span class="fw-bold h5 text-warning">3. </span class="text-wrap">La app propone, vosotros votáis</p>
+            </div>
+      
+            <div class="d-none d-md-flex justify-content-center gap-2">
+                <a href={% url "register" %} class="btn btn-lg btn-warning">Empezar</a>
+                <a href={% url "login" %} class="btn btn-lg btn-outline-light">Ya tengo cuenta</a>
+            </div>
+            <div class="d-flex d-md-none justify-content-center gap-2">
+                <a href={% url "register" %} class="btn btn-warning">Empezar</a>
+                <a href={% url "login" %} class="btn btn-outline-light">Ya tengo cuenta</a>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
