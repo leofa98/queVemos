@@ -9,7 +9,7 @@
                 {{ candidate.title.get_media_type_display }} · {{ candidate.title.year }}
                 {% if candidate.room.winner.id == candidate.id %}
                     <span class="ms-2 badge text-white bg-success mt-1 mt-md-0">Ganador</span> 
-                {% elif candidate.id == favourite.id %}
+                {% elif candidate.id == favourite.id and candidate.room.status != "closed" %}
                     <span class="ms-2 badge text-danger-emphasis bg-danger-subtle mt-1 mt-md-0">Favorito</span>
                 {% endif %}
             </small>
@@ -17,9 +17,8 @@
         <div class="mb-3">
               <small class="text-primary fw-bold">
                 {{ candidate.get_origin_display }}
-            </small> · <small class="m-0 text-secondary">{{ candidate.reason }}</small>
+            </small><small class="m-0 text-secondary"> · {{ candidate.reason }}</small>
         </div>
-
     </div>
     <div class="d-flex w-50 justify-content-end align-items-end flex-column mb-3 mb-md-0">
         <div class=" d-none d-md-flex gap-1">
@@ -47,7 +46,5 @@
                 {{ candidate.down_count }}
             </button> 
         </div>
-
     </div>
-
 </div>

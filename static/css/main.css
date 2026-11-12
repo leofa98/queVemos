@@ -227,7 +227,7 @@ label {
       background:
     radial-gradient(ellipse at center, rgba(36, 57, 95, .75) 0%, rgba(36, 57, 95, .55) 70%),
 
-      url("../img/index_background.jpg") center / cover no-repeat;
+      url("../img/index_background.webp") center / cover no-repeat;
   }
 /* Login y registro */
 
@@ -256,7 +256,7 @@ label {
   color: #fff;
   background:
     linear-gradient(0deg, rgba(36, 57, 95, .95) 10%, rgba(36, 57, 95, .55) 70%),
-    url("../img/image_background.jpg") center / cover no-repeat;
+    url("../img/side_background.webp") center / cover no-repeat;
 }
 
 .auth-side .logo {
