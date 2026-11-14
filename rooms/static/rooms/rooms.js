@@ -92,12 +92,12 @@ async function addRoom(name, allow_seen) {
   return data;
 }
 
-async function joinRoom(invitation_code) {
+async function joinRoom(invitationCode) {
   let data = await apiFetch(`rooms/join`, {
     method: "POST",
     headers: { "X-CSRFToken": csrfToken },
     body: new URLSearchParams({
-      invitation_code,
+      invitation_code: invitationCode,
     }),
   });
   return data;
@@ -108,7 +108,7 @@ async function filterRooms(status, page) {
     status,
     page,
   });
-  let data = await apiFetchText(`rooms/list?${params}`, {
+  let data = await apiFetchText(`rooms/list?${params} `, {
     method: "GET",
   });
   return data;

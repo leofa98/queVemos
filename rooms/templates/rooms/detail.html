@@ -14,10 +14,10 @@
         <a class="text-decoration-none" href="{% url "rooms" %}"><i class="bi bi-arrow-left me-2"></i> Mis salas</a>
     </div>
     {% if room.status == "closed" %}
-    <div class="mx-0 room-card row border border-primary bg-primary p-3 p-sm-4 mb-4 rounded-2 align-items-center">
+    <div class="mx-0 row border winner-banner  border-primary bg-primary p-3 p-sm-4 mb-4 rounded-2 align-items-center">
         <div class="row mx-0 p-0">
             <div class="mx-0 p-0 col-sm mb-4 mb-sm-0 d-flex justify-content-center flex-column align-items-start">
-                <small class="text-warning mb-2">VAIS A VER</small>
+                <small class="text-ambar-claro fw-bold mb-2">VAIS A VER</small>
                 <h4 class="fw-bold text-white">{{ room.winner.title.name }}</h4>
                 <small class="text-light">{{ room.winner.title.get_media_type_display }} · {{ room.winner.title.year }} · {{ winner.up_count }} a favor, {{ winner.down_count }} en contra</small>
             </div>
@@ -29,7 +29,7 @@
         </div>
     </div>
     {% endif %}
-    <div class="mx-0 room-card row border border-secondary p-3 p-sm-4 mb-4 rounded-2 align-items-center">
+    <div class="mx-0 row border border-secondary p-3 p-sm-4 mb-4 rounded-2 align-items-center bg-light">
         <div class="row mx-0 p-0">
             <div class="mx-0 p-0 col-sm mb-4 mb-sm-0 d-flex justify-content-center flex-column align-items-start">
                 <div>
@@ -91,7 +91,7 @@
         <div class="mb-4">
             <div class="row mx-0 gap-sm-3 d-sm-flex">
                 <div class="col-6 pe-1 pe-sm-0 col-sm-auto p-0">
-                    <button class="w-100 btn btn-primary" type="">Sugerir títulos</button>
+                    <button id="btn-suggest-candidates" class="w-100 btn btn-primary" type="">Sugerir títulos</button>
                 </div>
                 <div class="col-6 ps-1 ps-sm-0 col-sm-auto p-0">
                     <button data-bs-target="#proposeTitleModal" data-bs-toggle="modal" class="w-100 btn btn-outline-primary" type="">+ Proponer</button>

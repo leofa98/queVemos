@@ -15,8 +15,9 @@
         <h2 class="my-2 text-primary">Mi biblioteca</h2>
         <button id="add-title-btn" type="button" class="btn btn-primary align-self-center" data-bs-toggle="modal" data-bs-target="#add-title-modal"><i class="bi bi-plus-circle  me-2"></i> Añadir título</button>
     </div>
-    <div class="mb-4">
-        <input type="text" id="search-input" class="form-control form-control-lg" name="query" value={{ request.GET.query|default:'' }}>
+    <div class="mb-4 input-group input-group-lg">
+        <span class="input-group-text" id="inputGroup-sizing-lg"><i class="bi bi-search"></i></span>
+        <input type="text" id="search-input" class="form-control bg-white form-control-lg" name="query" value={{ request.GET.query|default:'' }}>
     </div>
     <div class="d-flex gap-3 flex-wrap mb-4">
         <a class="btn btn-outline-primary status-chip {% if request.GET.status == '' or not request.GET.status %} active {% endif %}" data-status="">
