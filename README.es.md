@@ -1,6 +1,7 @@
 [Read in English](README.md)
 
 # QuéVemos
+**Demo:** https://quevemos.pythonanywhere.com
 
 QuéVemos es una aplicación web para decidir qué ver en grupo. Es un proyecto personal en el que trabajo de vez en cuando. Lo uso para practicar.
 
@@ -80,6 +81,7 @@ En Linux o macOS el entorno se activa con `source .venv/bin/activate`.
 Después abre `http://127.0.0.1:8000`, crea una cuenta y empieza a añadir títulos a tu biblioteca.
 
 ## Datos de prueba
+Puedes probar la demo con los usuarios de abajo o crear tu propia cuenta. Los datos de la demo pueden reiniciarse de vez en cuando.
 
 El comando `loaddata` carga un catálogo de 50 títulos y tres usuarios de ejemplo: `marta`, `luis` y `ana`, con la contraseña `quevemos2026`. Sus bibliotecas tienen títulos en común, así que sirven para probar las salas sin tener que crear varias cuentas y rellenarlas a mano. Si solo quieres el catálogo, carga únicamente `catalog.json`.
 

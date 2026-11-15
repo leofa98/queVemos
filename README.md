@@ -1,6 +1,7 @@
 [Leer en español](README.es.md)
 
 # QuéVemos
+**Live demo:** https://quevemos.pythonanywhere.com
 
 QuéVemos is a web app to decide what to watch as a group. It's a personal project I work on from time to time. I use it to practice.
  
@@ -82,6 +83,7 @@ On Linux or macOS activate the environment with `source .venv/bin/activate`.
 Then open `http://127.0.0.1:8000`, create an account and start adding titles to your library.
 
 ## Demo data
+You can try the live demo with the demo users below, or create your own account. The data in the demo may be reset from time to time.
 
 The `loaddata` command loads a catalog of 50 titles and three sample users: `marta`, `luis` and `ana`, with the password `quevemos2026`. Their libraries share some titles, so you can try the rooms without creating several accounts and filling them by hand. If you only want the catalog, load just `catalog.json`.
 
